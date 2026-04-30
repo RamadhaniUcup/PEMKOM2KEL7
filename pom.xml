@@ -7,7 +7,25 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>25</maven.compiler.release>
+        <maven.compiler.release>24</maven.compiler.release>
         <exec.mainClass>com.mycompany.pemkom2.Pemkom2</exec.mainClass>
-    </properties>
+   </properties>
+
+    <dependencies>
+         <!-- Driver NoSQL MongoDB (Pertemuan 5) -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <!-- Library Hardware RFID (Pertemuan 13) -->
+        <dependency>
+            <groupId>com.fazecast</groupId>
+            <artifactId>jSerialComm</artifactId>
+            <version>2.10.4</version>
+        </dependency>
+    
+    </dependencies>
+        
+
 </project>
