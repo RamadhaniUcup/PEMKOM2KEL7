@@ -1,47 +1,45 @@
- /* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-  package Sipenta.object;
-  
-  import java.time.LocalDateTime;
-  
-  
-  public class LogAbsensi {
-      private String idLog;
-      private String uidRfid;
-      private LocalDateTime waktuTap;
-      private String status;
+package sipenta.object;
 
-    public LogAbsensi(String idLog, String uidRfid, LocalDateTime waktuTap, String status) {
-        this.idLog = idLog;
-        this.uidRfid = uidRfid;
-        this.waktuTap = waktuTap;
+public class LogAbsensi {
+
+    private String nip;
+    private String tanggal;
+    private String jam_masuk;
+    private String status;
+
+    // Constructor kosong (WAJIB untuk MongoDB)
+    public LogAbsensi() {}
+
+    // Constructor lengkap
+    public LogAbsensi(String nip, String tanggal, String jam_masuk, String status) {
+        this.nip = nip;
+        this.tanggal = tanggal;
+        this.jam_masuk = jam_masuk;
         this.status = status;
     }
 
-    public String getIdLog() {
-        return idLog;
+    public String getNip() {
+        return nip;
     }
 
-    public void setIdLog(String idLog) {
-        this.idLog = idLog;
+    public void setNip(String nip) {
+        this.nip = nip;
     }
 
-    public String getUidRfid() {
-        return uidRfid;
+    public String getTanggal() {
+        return tanggal;
     }
 
-    public void setUidRfid(String uidRfid) {
-        this.uidRfid = uidRfid;
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
     }
 
-    public LocalDateTime getWaktuTap() {
-        return waktuTap;
+    public String getJam_masuk() {
+        return jam_masuk;
     }
 
-    public void setWaktuTap(LocalDateTime waktuTap) {
-        this.waktuTap = waktuTap;
+    public void setJam_masuk(String jam_masuk) {
+        this.jam_masuk = jam_masuk;
     }
 
     public String getStatus() {
@@ -51,13 +49,4 @@
     public void setStatus(String status) {
         this.status = status;
     }
-     
-      
-      
-  
-  }
-/**
- *
- * @author VICTUS
- */
-
+}

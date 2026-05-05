@@ -2,44 +2,48 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Sipenta.dao;
+package sipenta.dao;
 
 public class Karyawan {
     
-    private String uiRfid;
-    private String idKaryawan;
-    private String namaLengkap;
+    private String rfid;
+    private String nip;
+    private String nama;
     private String jabatan;
 
-    public Karyawan(String uiRfid, String idKaryawan, String namaLengkap, String jabatan) {
-        this.uiRfid = uiRfid;
-        this.idKaryawan = idKaryawan;
-        this.namaLengkap = namaLengkap;
+    // Constructor kosong (WAJIB untuk MongoDB)
+    public Karyawan() {}
+
+    // Constructor lengkap
+    public Karyawan(String rfid, String nip, String nama, String jabatan) {
+        this.rfid = rfid;
+        this.nip = nip;
+        this.nama = nama;
         this.jabatan = jabatan;
     }
 
-    public String getUiRfid() {
-        return uiRfid;
+    public String getRfid() {
+        return rfid;
     }
 
-    public void setUiRfid(String uiRfid) {
-        this.uiRfid = uiRfid;
+    public void setRfid(String rfid) {
+        this.rfid = rfid;
     }
 
-    public String getIdKaryawan() {
-        return idKaryawan;
+    public String getNip() {
+        return nip;
     }
 
-    public void setIdKaryawan(String idKaryawan) {
-        this.idKaryawan = idKaryawan;
+    public void setNip(String nip) {
+        this.nip = nip;
     }
 
-    public String getNamaLengkap() {
-        return namaLengkap;
+    public String getNama() {
+        return nama;
     }
 
-    public void setNamaLengkap(String namaLengkap) {
-        this.namaLengkap = namaLengkap;
+    public void setNama(String nama) {
+        this.nama = nama;
     }
 
     public String getJabatan() {
@@ -49,7 +53,6 @@ public class Karyawan {
     public void setJabatan(String jabatan) {
         this.jabatan = jabatan;
     }
-
 }
 
 
