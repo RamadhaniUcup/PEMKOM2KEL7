@@ -49,4 +49,8 @@ public class GenericDAO<T> implements BaseDao<T> {
     public List<T> findMany(Bson filter) {
         return collection.find(filter).into(new ArrayList<>());
     }
+
+    public List<T> find(Bson filter) {
+        return collection.find(filter).into(new ArrayList<>());
+    }
 }

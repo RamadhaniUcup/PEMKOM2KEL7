@@ -21,6 +21,7 @@ public class Karyawan {
         this.nama = nama;
         this.jabatan = jabatan;
     }
+    
 
     public String getRfid() {
         return rfid;
