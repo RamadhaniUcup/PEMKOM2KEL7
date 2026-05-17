@@ -143,7 +143,7 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
 
-        tblkaryawan.setBackground(new java.awt.Color(0, 51, 153));
+        tblkaryawan.setBackground(new java.awt.Color(0, 0, 102));
         tblkaryawan.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         tblkaryawan.setForeground(new java.awt.Color(255, 255, 255));
         tblkaryawan.setModel(new javax.swing.table.DefaultTableModel(
@@ -163,12 +163,6 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblkaryawan);
-        if (tblkaryawan.getColumnModel().getColumnCount() > 0) {
-            tblkaryawan.getColumnModel().getColumn(0).setHeaderValue("UID");
-            tblkaryawan.getColumnModel().getColumn(1).setHeaderValue("ID Karyawan");
-            tblkaryawan.getColumnModel().getColumn(2).setHeaderValue("Nama Karyawan");
-            tblkaryawan.getColumnModel().getColumn(3).setHeaderValue("Jabatan");
-        }
 
         btnHapus.setBackground(new java.awt.Color(255, 0, 0));
         btnHapus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
