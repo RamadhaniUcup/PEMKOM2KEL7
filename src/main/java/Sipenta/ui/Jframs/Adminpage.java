@@ -19,15 +19,15 @@ import org.bson.Document;
  *
  * @author ASUS
  */
-public class CRUD_Karyawan extends javax.swing.JFrame {
+public class Adminpage extends javax.swing.JFrame {
     int posisiY = 150;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CRUD_Karyawan.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Adminpage.class.getName());
 
     /**
      * Creates new form CRUD_Karyawan
      */
-    public CRUD_Karyawan() {
+    public Adminpage() {
         initComponents();
         
         panelData.setLayout(new FlowLayout(FlowLayout.LEFT, 8, 8));
@@ -455,7 +455,7 @@ public class CRUD_Karyawan extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelDataLayout.setVerticalGroup(
             panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -646,7 +646,7 @@ public class CRUD_Karyawan extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new CRUD_Karyawan().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Adminpage().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
