@@ -1,11 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sipenta.dao;
+
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonRepresentation;
+import org.bson.BsonType;
 
 public class Karyawan {
     
+    // 1. TAMBAHAN WAJIB UNTUK MONGODB
+    @BsonId
+    @BsonRepresentation(BsonType.OBJECT_ID)
+    private String id; // Ini untuk menyimpan _id bawaan MongoDB
+
     private String rfid;
     private String nip;
     private String nama;
@@ -14,7 +19,7 @@ public class Karyawan {
     // Constructor kosong (WAJIB untuk MongoDB)
     public Karyawan() {}
 
-    // Constructor lengkap
+    // Constructor lengkap (tanpa id, karena id dibuat otomatis oleh MongoDB)
     public Karyawan(String rfid, String nip, String nama, String jabatan) {
         this.rfid = rfid;
         this.nip = nip;
@@ -22,6 +27,15 @@ public class Karyawan {
         this.jabatan = jabatan;
     }
     
+    // --- GETTER & SETTER STANDAR ---
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getRfid() {
         return rfid;
@@ -54,11 +68,16 @@ public class Karyawan {
     public void setJabatan(String jabatan) {
         this.jabatan = jabatan;
     }
+
+    // --- PERBAIKAN METHOD JEBAKAN ---
+    
+    // Karena di AdminPage kamu memanggil k.getUid() untuk UID, kita arahkan ke rfid
+    public String getUid() {
+        return rfid; 
+    }
+
+    // Karena di AdminPage kamu memanggil k.getNamaLengkap(), kita arahkan ke nama
+    public String getNamaLengkap() {
+        return nama;
+    }
 }
-
-
-/**
- *
- * @author VICTUS
- */
-
