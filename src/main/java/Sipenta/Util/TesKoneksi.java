@@ -2,8 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Sipenta.object;
-import Koneksi.MongoManager;
+package Sipenta.Util;
+import Sipenta.Util.MongoManager;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 

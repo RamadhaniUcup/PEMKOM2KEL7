@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package sipenta.dao;
-import Koneksi.MongoManager;
+import Sipenta.Util.MongoManager;
 import com.mongodb.client.MongoCollection;
 import org.bson.conversions.Bson;
 import java.util.ArrayList;

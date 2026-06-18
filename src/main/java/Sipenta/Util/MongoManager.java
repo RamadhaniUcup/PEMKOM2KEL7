@@ -1,4 +1,4 @@
-package Koneksi;
+package Sipenta.Util;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
