@@ -1,78 +1,75 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Sipenta.Util;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
-
-/**
- *
- * @author mnish
- */
 public class EncryptionUtils {
+
     private static final String ALGORITHM = "AES";
-    
-    // Kunci rahasia (harus 16 karakter untuk AES-128)
-    // Dalam industri nyata, kunci ini disimpan di environment variable atau KeyVault
-    private static final String KEY = System.getProperty("KEY");
-    private static final byte[] SECRET_KEY = KEY.getBytes(); 
-    
-    /**
-     * Mengubah teks biasa menjadi teks tersandi (Enkripsi).
-     * @param value
-     * @return 
-     */
+    private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
+
+    private static SecretKeySpec getKeySpec() {
+        String key = System.getProperty("KEY");
+
+        if (key == null || key.isEmpty()) {
+            throw new RuntimeException("KEY belum diatur. Isi VM Options dengan: -DKEY=\"SIPENTA2026KEY01\"");
+        }
+
+        // Menghapus tanda petik jika ikut terbaca oleh Java
+        key = key.replace("\"", "").trim();
+
+        if (key.length() != 16) {
+            throw new RuntimeException(
+                "KEY harus 16 karakter. KEY sekarang: " + key + 
+                " | jumlah karakter: " + key.length()
+            );
+        }
+
+        byte[] secretKey = key.getBytes(StandardCharsets.UTF_8);
+        return new SecretKeySpec(secretKey, ALGORITHM);
+    }
+
     public static String encrypt(String value) {
         try {
-            SecretKeySpec spec = new SecretKeySpec(SECRET_KEY, ALGORITHM);
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            if (value == null) {
+                return null;
+            }
+
+            SecretKeySpec spec = getKeySpec();
+
+            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(Cipher.ENCRYPT_MODE, spec);
 
-            byte[] encryptedBytes = cipher.doFinal(value.getBytes());
+            byte[] encryptedBytes = cipher.doFinal(value.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(encryptedBytes);
-        } catch (InvalidKeyException | NoSuchAlgorithmException | 
-                BadPaddingException | IllegalBlockSizeException | 
-                NoSuchPaddingException e) {
+
+        } catch (Exception e) {
             System.err.println("Error saat enkripsi: " + e.getMessage());
             return null;
         }
     }
 
-    /**
-     * Mengubah teks tersandi kembali ke teks asli (Dekripsi).
-     * @param encryptedValue
-     * @return 
-     */
     public static String decrypt(String encryptedValue) {
         try {
-            SecretKeySpec spec = new SecretKeySpec(SECRET_KEY, ALGORITHM);
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            if (encryptedValue == null) {
+                return null;
+            }
+
+            SecretKeySpec spec = getKeySpec();
+
+            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(Cipher.DECRYPT_MODE, spec);
 
             byte[] decodedBytes = Base64.getDecoder().decode(encryptedValue);
             byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-            return new String(decryptedBytes);
-        } catch (InvalidKeyException | NoSuchAlgorithmException | BadPaddingException |
-                IllegalBlockSizeException | NoSuchPaddingException e) {
+
+            return new String(decryptedBytes, StandardCharsets.UTF_8);
+
+        } catch (Exception e) {
             System.err.println("Error saat dekripsi: " + e.getMessage());
             return null;
         }
     }
-    
 }
-
-
-
-/**
- *
- * @author VICTUS
- */
-

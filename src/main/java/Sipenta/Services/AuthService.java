@@ -1,59 +1,63 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Sipenta.Services;
-import sipenta.dao.Karyawan;
+
+import Sipenta.object.User;
 import sipenta.dao.GenericDAO;
-import Sipenta.View.AdminPage; // Halaman tujuan
-import com.ituhn.pemkom2.gui.LoginPage; // 
+import Sipenta.View.AdminPage;
+import Sipenta.View.LoginPage;
 import Sipenta.Util.SecurityUtils;
 import com.mongodb.client.model.Filters;
 import java.awt.Frame;
-import javax.swing.JOptionPane;
 import java.time.LocalDateTime;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author mnish
- */
 public class AuthService {
 
-    // Inisialisasi DAO untuk koleksi "users" [8]
-    private final GenericDAO<Karyawan> userDAO = new GenericDAO<>("karyawan", Karyawan.class);
+    // DAO untuk collection users
+    private final GenericDAO<User> userDAO = new GenericDAO<>("users", User.class);
 
     /**
-     * Melakukan proses login dengan memvalidasi kredensial (Sub-CPMK 4) [5].
+     * Proses login admin/user.
      *
      * @param username
      * @param plainPassword
      * @param loginPage
      */
     public void login(String username, String plainPassword, LoginPage loginPage) {
-        // 1. Mengubah password input menjadi hash SHA-256 untuk keamanan [2]
+
+        if (username == null || username.trim().isEmpty()
+                || plainPassword == null || plainPassword.trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(null,
+                    "Username dan password tidak boleh kosong!",
+                    "Login Gagal",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Mengubah password input menjadi hash SHA-256
         String hashedInput = SecurityUtils.getHash(plainPassword, SecurityUtils.SHA_256);
 
-        // 2. Mencari user di database berdasarkan username DAN password hash [7, 9]
-        Karyawan user = userDAO.findOne(Filters.and(
+        // Mencari user berdasarkan username dan password hash
+        User user = userDAO.findOne(Filters.and(
                 Filters.eq("username", username),
                 Filters.eq("password", hashedInput)
         ));
 
-        // 3. Validasi hasil pencarian
         if (user != null) {
-            // Update waktu login terakhir
+            // Update last login
             user.setLastLogin(LocalDateTime.now());
             userDAO.update(Filters.eq("username", username), user);
 
-            // Berhasil: Masuk ke Halaman Admin
             JOptionPane.showMessageDialog(null, "Selamat Datang, " + user.getFullname());
+
             AdminPage admPage = new AdminPage();
-            admPage.setLocationRelativeTo(null); 
+            admPage.setLocationRelativeTo(null);
             admPage.setVisible(true);
-            admPage.setExtendedState(Frame.MAXIMIZED_BOTH); 
-            loginPage.setVisible(false); 
+            admPage.setExtendedState(Frame.MAXIMIZED_BOTH);
+
+            loginPage.setVisible(false);
+
         } else {
-            // Gagal: Notifikasi Error
             JOptionPane.showMessageDialog(null,
                     "Username atau Password Salah!",
                     "Login Gagal",
@@ -62,33 +66,54 @@ public class AuthService {
     }
 
     /**
-     * Metode untuk menambahkan user/admin baru ke database. Implementasi sesuai
-     * target SPRINT 3 untuk pengamanan kredensial [2].
+     * Register user/admin baru.
      *
-     * @param fullname Nama lengkap user
-     * @param username Username untuk login
-     * @param plainPassword Password mentah (akan di-hash otomatis)
+     * @param fullname
+     * @param username
+     * @param plainPassword
      */
     public void registerUser(String fullname, String username, String plainPassword) {
-        // 1. Proses Hashing: Mengamankan password mentah menggunakan SHA-256 [1]
+
+        if (fullname == null || fullname.trim().isEmpty()
+                || username == null || username.trim().isEmpty()
+                || plainPassword == null || plainPassword.trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(null,
+                    "Fullname, username, dan password tidak boleh kosong!",
+                    "Register Gagal",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Cek apakah username sudah ada
+        User existingUser = userDAO.findOne(Filters.eq("username", username));
+
+        if (existingUser != null) {
+            JOptionPane.showMessageDialog(null,
+                    "Username sudah digunakan!",
+                    "Register Gagal",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Hash password menggunakan SHA-256
         String hashedPassword = SecurityUtils.getHash(plainPassword, SecurityUtils.SHA_256);
 
-        // 2. Instansiasi Objek: Membuat objek User baru dengan password yang sudah di-hash
-        // lastLogin disetel null karena user baru belum pernah masuk sistem
-        Karyawan newUser = new Karyawan(fullname, username, hashedPassword, null);
+        User newUser = new User(fullname, username, hashedPassword, null);
 
-        // 3. Operasi Create: Menyimpan dokumen user ke koleksi MongoDB melalui GenericDAO [3], [4]
         try {
-            userDAO.save(newUser); // Memanggil insertOne melalui GenericDAO [5]
+            userDAO.save(newUser);
+
+            JOptionPane.showMessageDialog(null,
+                    "User berhasil didaftarkan!",
+                    "Register Berhasil",
+                    JOptionPane.INFORMATION_MESSAGE);
+
         } catch (Exception e) {
-            // Standar Debugging: Mengidentifikasi error log secara mandiri [6]
-            JOptionPane.showMessageDialog(null, "Gagal mendaftarkan user: " + e.getMessage());
+            JOptionPane.showMessageDialog(null,
+                    "Gagal mendaftarkan user: " + e.getMessage(),
+                    "Register Gagal",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }
-
-
-/**
- *
- * @author VICTUS
- */
