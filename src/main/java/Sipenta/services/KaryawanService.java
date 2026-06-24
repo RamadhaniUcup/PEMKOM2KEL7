@@ -4,65 +4,125 @@
  */
 package Sipenta.services;
 
-import java.util.List;
-import com.mongodb.client.model.Filters;
-import sipenta.dao.GenericDAO;
 import Sipenta.object.Karyawan;
+import Sipenta.ui.Jframs.Adminpage;
+import Sipenta.dao.GenericDAO;
+import com.mongodb.client.model.Filters;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 public class KaryawanService {
 
     // Variabel dao harus tahu dia membawa objek Karyawan
-    private GenericDAO<Karyawan> dao;
+    private final GenericDAO<Karyawan> dao;
 
     public KaryawanService() {
 
         // Panggil dengan Class dan nama koleksi
             this.dao = new GenericDAO<>("karyawan", Karyawan.class);
     }
-    public List<Karyawan> search(String keyword) {
-        Bson filter = Filters.or(
-            Filters.regex("nama", keyword, "i"),
-            Filters.regex("nip", keyword, "i")
-            
-        );
-        return dao.find(filter);
+    public void tambahKaryawan(Karyawan karyawanBaru) {
+        dao.save(karyawanBaru);
     }
-
+    
     public List<Karyawan> findAll() {
         return dao.findAll();
     }
 
-    public void save(Karyawan k) {
-        dao.save(k);
+    public List<Karyawan> search(String key) {
+        Bson filter = Filters.or(
+                Filters.regex("nama", key, "i"),
+                Filters.regex("nip", key, "i"),
+                Filters.regex("jabatan", key, "i")
+        );
+        
+        return dao.findMany(filter);
     }
 
-    public void update(Karyawan k, String nip) {
-        dao.update(Filters.eq("nip", nip), k);
-    }
+    
+    public void tampilKaryawan(JPanel panelTarget, String key) {
+        List<Karyawan> daftarKaryawan;
 
-    public void delete(String nip) {
-        dao.delete(Filters.eq("nip", nip));
-    }
+        if (key == null || key.isEmpty()) {
+            daftarKaryawan = dao.findAll();
+        } else {
+            daftarKaryawan = search(key);
+        }
+        
+        panelTarget.removeAll();
+        panelTarget.setLayout(new BorderLayout());
 
-    public void tampilKaryawan(JPanel jPanel4, String key) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        JPanel gridPanel = new JPanel(new GridLayout(0, 3, 10, 10));
 
-    public void updateKaryawan(Karyawan K) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        for (Karyawan k : daftarKaryawan) {
+            JPanel card = new JPanel();
+            card.setLayout(new GridLayout(5, 1, 0, 5));
+            card.setPreferredSize(new java.awt.Dimension(300, 150));
+            card.setBorder(javax.swing.BorderFactory.createEmptyBorder(
+                10, 10, 10, 10));
+            
+            JLabel lblNama = new JLabel("Nama : " + k.getNama());
+            JLabel lblID = new JLabel("ID Karyawan : " + k.getId());
+            JLabel lblNip = new JLabel("NIP : " + k.getNip());
+            JLabel lblJabatan = new JLabel("Jabatan : " + k.getJabatan());
+            
+            JPanel tombolPanel = new JPanel(new GridLayout(1, 2, 5, 0));
+            
+            JButton btnEdit = new JButton("Edit");
+            JButton btnDelete = new JButton("Delete");
+            
+            btnEdit.addActionListener((ActionEvent e) -> {
+                Adminpage.idKaryawanEdit = k.getId();
+                Adminpage.txtUID.setText(k.getRfid());
+                Adminpage.txtID.setText(k.getNip());
+                Adminpage.txtNama.setText(k.getNama());
+                Adminpage.cbDepartemen.setSelectedItem(k.getJabatan());
+            });
+            
+            btnDelete.addActionListener((ActionEvent e) -> {
+                deleteKaryawan(k.getId());
+            });
+        
+            tombolPanel.add(btnEdit);
+            tombolPanel.add(btnDelete);
 
-    public void tambahKaryawan(Karyawan K) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+            card.add(lblNama);
+            card.add(lblID);
+            card.add(lblNip);
+            card.add(lblJabatan);
+            card.add(tombolPanel);
 
-    public List<Karyawan> tampilKaryawan(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+            gridPanel.add(card);
+        }
+        
+        panelTarget.add(gridPanel, BorderLayout.NORTH);
 
-    public void deleteKaryawan(String uid) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        panelTarget.revalidate();
+        panelTarget.repaint();
+    }
+    
+    
+    public void updateKaryawan(Karyawan k) {
+        Bson filter =
+                Filters.eq("_id",
+                        new ObjectId(k.getId()));
+
+        dao.update(filter, k);
+    }
+  
+    public void deleteKaryawan(String id) {
+
+        Bson filter =
+                Filters.eq("_id",
+                        new ObjectId(id));
+
+        dao.delete(filter);
     }
 }

@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Sipenta.object;
+
+import org.bson.BsonType;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonRepresentation;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -10,14 +14,17 @@ package Sipenta.object;
 
 public class Karyawan {
     
+    @BsonId
+    @BsonRepresentation(BsonType.OBJECT_ID)
+
+    private String id;
     private String rfid;
     private String nip;
     private String nama;
     private String jabatan;
-    public String getiId;
-
     // Constructor kosong (WAJIB untuk MongoDB)
-    public Karyawan() {}
+    public Karyawan() {
+    }
 
     // Constructor lengkap
     public Karyawan(String rfid, String nip, String nama, String jabatan) {
@@ -27,6 +34,23 @@ public class Karyawan {
         this.jabatan = jabatan;
     }
     
+    @Override
+    public String toString() {
+    return "Karyawan{" +
+            "rfid=" + rfid +
+            ", nip=" + nip +
+            ", nama=" + nama +
+            ", jabatan=" + jabatan + '}';
+}
+    
+    // Getter & Setter
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getRfid() {
         return rfid;
@@ -60,35 +84,19 @@ public class Karyawan {
         this.jabatan = jabatan;
     }
 
-    public void set(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String getUid() {
+        return rfid;
     }
 
-    public void setIdKaryawan(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String getNamaLengkap() {
+        return nama;
     }
 
-    public void setUidRfid(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setUid(String uid) {
+        this.rfid = uid;
     }
 
-    public void setNamaLengkap(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void setDepartemen(String toString) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public String getUID() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setNamaLengkap(String namaLengkap) {
+        this.nama = namaLengkap;
     }
 }
-
-
-/**
- *
- * @author VICTUS
- */
-
-

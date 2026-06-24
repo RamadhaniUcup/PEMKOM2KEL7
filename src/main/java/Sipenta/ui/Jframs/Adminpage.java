@@ -3,36 +3,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Sipenta.ui.Jframs;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.Component;
 
-import Sipenta.object.KoneksiMongo;
-
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoCursor;
-
-import org.bson.Document;
-
+import Sipenta.object.Karyawan;
+import Sipenta.services.KaryawanService;
 /**
  *
  * @author ASUS
  */
 public class Adminpage extends javax.swing.JFrame {
-    int posisiY = 150;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Adminpage.class.getName());
-
+    public static String idKaryawanEdit = "";
+    
     /**
      * Creates new form CRUD_Karyawan
      */
     public Adminpage() {
         initComponents();
-        
-        panelData.setLayout(new FlowLayout(FlowLayout.LEFT, 8, 8));
-        
-        tampilData();
+       
+        showData("");
     }
 
     /**
@@ -510,22 +498,17 @@ public class Adminpage extends javax.swing.JFrame {
     }                                            
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        MongoDatabase db = KoneksiMongo.getDatabase();
-        MongoCollection<Document> col = db.getCollection("karyawan");
+        Karyawan k = new Karyawan();
+        k.setRfid(txtUID.getText());
+        k.setNip(txtID.getText());
+        k.setNama(txtNama.getText());
+        k.setJabatan(cbDepartemen.getSelectedItem().toString());
 
-        Document data = new Document("uid", txtUID.getText())
-            .append("id_karyawan", txtID.getText())
-            .append("nama", txtNama.getText())
-            .append("departemen", cbDepartemen.getSelectedItem().toString());
+        KaryawanService service = new KaryawanService();
+        service.tambahKaryawan(k);
 
-        col.insertOne(data);
-
-        tampilData();
-
-        txtUID.setText("");
-        txtID.setText("");
-        txtNama.setText("");
-        cbDepartemen.setSelectedIndex(0);
+        showData("");
+        
     }                                       
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {                                          
@@ -553,133 +536,41 @@ public class Adminpage extends javax.swing.JFrame {
     }                                        
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {                                      
-        String cari = txtSearch.getText().toLowerCase();
-
-        Component[] cards = panelData.getComponents();
-
-        for(Component c : cards){
-
-            JPanel card = (JPanel) c;
-
-            Component[] isi = card.getComponents();
-
-            boolean ketemu = false;
-
-            for(Component x : isi){
-
-                if(x instanceof JLabel){
-
-                    JLabel lbl = (JLabel) x;
-
-                    if(lbl.getText().toLowerCase().contains(cari)){
-                        ketemu = true;
-                    }
-                }
-            }
-
-            card.setVisible(ketemu);
-        }
-
-        panelData.revalidate();
-        panelData.repaint();
+        showData(txtSearch.getText());
     }                                     
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        tampilData();
-        JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!");
+        refresAll();
+                
     }                                        
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        MongoDatabase db = KoneksiMongo.getDatabase();
-        MongoCollection<Document> col = db.getCollection("karyawan");
+        Karyawan k = new Karyawan();
+        k.setId(idKaryawanEdit);
+        k.setRfid(txtUID.getText());
+        k.setNip(txtID.getText());
+        k.setNama(txtNama.getText());
+        k.setJabatan(cbDepartemen.getSelectedItem().toString());
 
-        col.updateOne(new Document("nama", txtNama.getText()),
-                new Document("$set", new Document("uid", txtUID.getText())
-                        .append("id_karyawan", txtID.getText())
-                        .append("departemen", cbDepartemen.getSelectedItem().toString())));
+        KaryawanService service = new KaryawanService();
+        service.updateKaryawan(k);
 
-        JOptionPane.showMessageDialog(this, "Data sukses di-Update!");
-        tampilData();
-        
+        showData("");
+    }                                        
+    public static void showData(String key) {
+        KaryawanService service = new KaryawanService();
+        service.tampilKaryawan(panelData, key);                              
+    }
+    
+    private void refresAll() {
         txtUID.setText("");
         txtID.setText("");
         txtNama.setText("");
         cbDepartemen.setSelectedIndex(0);
-    }                                        
-
-    public void tampilData(){
-        panelData.removeAll();
-
-        MongoDatabase db = KoneksiMongo.getDatabase();
-        MongoCollection<Document> col = db.getCollection("karyawan");
-
-        MongoCursor<Document> cursor = col.find().iterator();
-
-        while(cursor.hasNext()){
-            Document d = cursor.next();
-
-            final String nama = d.getString("nama");
-            final String id = String.valueOf(d.get("id_karyawan"));
-            final String dept = d.getString("departemen");
-
-            JPanel card = new JPanel();
-            card.setPreferredSize(new Dimension(350,115));
-            card.setBackground(new Color(153,153,153));
-            card.setLayout(null);
-
-            JLabel lNama = new JLabel("Nama : " + nama);
-            lNama.setBounds(10,8,250,18);
-
-            JLabel lID = new JLabel("ID Karyawan : " + id);
-            lID.setBounds(10,32,250,18);
-
-            JLabel lDept = new JLabel("Departemen : " + dept);
-            lDept.setBounds(10,56,300,18);
-
-            JButton btnEditCard = new JButton("Edit");
-            btnEditCard.setBounds(20,82,145,23);
-            btnEditCard.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    txtNama.setText(nama);
-                    txtID.setText(id != null && !id.equals("null") ? id : "");
-                    
-                    MongoDatabase dbInternal = KoneksiMongo.getDatabase();
-                    MongoCollection<Document> colInternal = dbInternal.getCollection("karyawan");
-                    Document found = colInternal.find(new Document("nama", nama)).first();
-                    if (found != null) {
-                        txtUID.setText(found.getString("uid"));
-                    }
-                    cbDepartemen.setSelectedItem(dept);
-                }
-            });
-
-            JButton btnDeleteCard = new JButton("Delete");
-            btnDeleteCard.setBounds(175,82,145,23);
-            btnDeleteCard.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    int confirm = JOptionPane.showConfirmDialog(null, "Yakin mau hapus data " + nama + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        MongoDatabase dbInternal = KoneksiMongo.getDatabase();
-                        MongoCollection<Document> colInternal = dbInternal.getCollection("karyawan");
-                        colInternal.deleteOne(new Document("nama", nama));
-                        JOptionPane.showMessageDialog(null, "Data berhasil dihapus!");
-                        tampilData();
-                    }
-                }
-            });
-
-            card.add(lNama);
-            card.add(lID);
-            card.add(lDept);
-            card.add(btnEditCard);
-            card.add(btnDeleteCard);
-
-            panelData.add(card);
-        }
-
-        panelData.revalidate();
-        panelData.repaint();
-    }
+        txtID.setEnabled(true);
+        btnSave.setEnabled(true);
+        txtUID.requestFocus();
+}
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -691,9 +582,9 @@ public class Adminpage extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+    }
         //</editor-fold>
 
         /* Create and display the form */
@@ -703,11 +594,11 @@ public class Adminpage extends javax.swing.JFrame {
     // Variables declaration - do not modify                     
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
-    private javax.swing.JButton btnSave;
-    private javax.swing.JComboBox<String> cbDepartemen;
+    public static javax.swing.JButton btnSave;
+    public static javax.swing.JComboBox<String> cbDepartemen;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton2;
+    public static javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
@@ -735,11 +626,11 @@ public class Adminpage extends javax.swing.JFrame {
     private javax.swing.JLabel lblNama1;
     private javax.swing.JLabel lblNama2;
     private javax.swing.JLabel lblNama3;
-    private javax.swing.JPanel panelData;
+    public static javax.swing.JPanel panelData;    
     private Sipenta.swing.Rounpanel rounpanel1;
-    private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtNama;
+    public static javax.swing.JTextField txtID;
+    public static javax.swing.JTextField txtNama;
     private javax.swing.JTextField txtSearch;
-    private javax.swing.JTextField txtUID;
+    public static javax.swing.JTextField txtUID;
     // End of variables declaration                   
 }

@@ -78,11 +78,21 @@ public class Dashboard extends javax.swing.JFrame {
         rounpanel2 = new Sipenta.swing.Rounpanel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton2 = new javax.swing.JButton();
+        jButtonDataKaryawan = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jButtonPengguna = new javax.swing.JButton();
+        jButtonKehadiran = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        jButtonKaryawan = new javax.swing.JButton();
+        jButtonLogAbsensi = new javax.swing.JButton();
+        jButtonKiosK = new javax.swing.JButton();
+        jButtonAnalisis = new javax.swing.JButton();
+        jButtonRiwayat = new javax.swing.JButton();
+        jButtonSetting = new javax.swing.JButton();
+        jButtonGeneral = new javax.swing.JButton();
+        jButtonReport = new javax.swing.JButton();
+        jButtonLogAbsensi2 = new javax.swing.JButton();
+        jButtonPerformance = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -440,7 +450,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(rounpanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(rounpanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(122, 122, 122)
+                        .addGap(134, 134, 134)
                         .addComponent(rounpanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(112, 112, 112)
                         .addComponent(rounpanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -517,12 +527,12 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jButton2.setBackground(new java.awt.Color(204, 204, 204));
-        jButton2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButton2.setText("Dashboard");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonDataKaryawan.setBackground(new java.awt.Color(204, 204, 204));
+        jButtonDataKaryawan.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonDataKaryawan.setText("Data Karyawan");
+        jButtonDataKaryawan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonDataKaryawanActionPerformed(evt);
             }
         });
 
@@ -530,21 +540,21 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("SIPENTA");
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 204));
-        jButton1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButton1.setText("Data Karyawan");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonPengguna.setBackground(new java.awt.Color(204, 204, 255));
+        jButtonPengguna.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonPengguna.setText("Pengguna");
+        jButtonPengguna.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonPenggunaActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 204));
-        jButton3.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButton3.setText("Log Absensi");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonKehadiran.setBackground(new java.awt.Color(204, 204, 204));
+        jButtonKehadiran.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonKehadiran.setText("Kehadiran");
+        jButtonKehadiran.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButtonKehadiranActionPerformed(evt);
             }
         });
 
@@ -552,12 +562,105 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(102, 102, 255));
         jLabel5.setText("Enterprise edition");
 
+        jButtonKaryawan.setBackground(new java.awt.Color(204, 204, 255));
+        jButtonKaryawan.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonKaryawan.setText("Karyawan");
+        jButtonKaryawan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonKaryawanActionPerformed(evt);
+            }
+        });
+
+        jButtonLogAbsensi.setBackground(new java.awt.Color(204, 204, 255));
+        jButtonLogAbsensi.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonLogAbsensi.setText("Log Absensi");
+        jButtonLogAbsensi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogAbsensiActionPerformed(evt);
+            }
+        });
+
+        jButtonKiosK.setBackground(new java.awt.Color(204, 204, 255));
+        jButtonKiosK.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonKiosK.setText("Kios K");
+        jButtonKiosK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonKiosKActionPerformed(evt);
+            }
+        });
+
+        jButtonAnalisis.setBackground(new java.awt.Color(204, 204, 255));
+        jButtonAnalisis.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonAnalisis.setText("Analisis");
+        jButtonAnalisis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAnalisisActionPerformed(evt);
+            }
+        });
+
+        jButtonRiwayat.setBackground(new java.awt.Color(204, 204, 255));
+        jButtonRiwayat.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonRiwayat.setText("Riwayat");
+        jButtonRiwayat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRiwayatActionPerformed(evt);
+            }
+        });
+
+        jButtonSetting.setBackground(new java.awt.Color(204, 204, 204));
+        jButtonSetting.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonSetting.setText("Setting");
+        jButtonSetting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSettingActionPerformed(evt);
+            }
+        });
+
+        jButtonGeneral.setBackground(new java.awt.Color(204, 204, 255));
+        jButtonGeneral.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonGeneral.setText("General");
+        jButtonGeneral.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGeneralActionPerformed(evt);
+            }
+        });
+
+        jButtonReport.setBackground(new java.awt.Color(204, 204, 204));
+        jButtonReport.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonReport.setText("Report");
+        jButtonReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReportActionPerformed(evt);
+            }
+        });
+
+        jButtonLogAbsensi2.setBackground(new java.awt.Color(204, 204, 255));
+        jButtonLogAbsensi2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonLogAbsensi2.setText("Log Absensi");
+        jButtonLogAbsensi2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogAbsensi2ActionPerformed(evt);
+            }
+        });
+
+        jButtonPerformance.setBackground(new java.awt.Color(204, 204, 255));
+        jButtonPerformance.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jButtonPerformance.setText("Performance");
+        jButtonPerformance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPerformanceActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout gradient1Layout = new javax.swing.GroupLayout(gradient1);
         gradient1.setLayout(gradient1Layout);
         gradient1Layout.setHorizontalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gradient1Layout.createSequentialGroup()
                 .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradient1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(gradient1Layout.createSequentialGroup()
                         .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(gradient1Layout.createSequentialGroup()
@@ -567,14 +670,24 @@ public class Dashboard extends javax.swing.JFrame {
                                     .addComponent(jLabel4)))
                             .addGroup(gradient1Layout.createSequentialGroup()
                                 .addGap(27, 27, 27)
-                                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton1)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradient1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jButtonDataKaryawan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonKaryawan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonLogAbsensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonPengguna, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(gradient1Layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonKehadiran, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonKiosK, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonAnalisis, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonRiwayat, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonSetting, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonReport, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonLogAbsensi2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonPerformance, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -586,14 +699,34 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
-                .addComponent(jButton2)
-                .addGap(61, 61, 61)
-                .addComponent(jButton1)
-                .addGap(67, 67, 67)
-                .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonDataKaryawan)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonKaryawan)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonLogAbsensi)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonPengguna)
+                .addGap(32, 32, 32)
+                .addComponent(jButtonKehadiran)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonKiosK)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonRiwayat)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonAnalisis)
+                .addGap(24, 24, 24)
+                .addComponent(jButtonSetting)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonGeneral)
+                .addGap(39, 39, 39)
+                .addComponent(jButtonReport)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonLogAbsensi2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonPerformance)
+                .addContainerGap(99, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -612,17 +745,57 @@ public class Dashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
      
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonPenggunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPenggunaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonPenggunaActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButtonKehadiranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonKehadiranActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButtonKehadiranActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButtonDataKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataKaryawanActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButtonDataKaryawanActionPerformed
+
+    private void jButtonKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonKaryawanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonKaryawanActionPerformed
+
+    private void jButtonLogAbsensiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogAbsensiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonLogAbsensiActionPerformed
+
+    private void jButtonKiosKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonKiosKActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonKiosKActionPerformed
+
+    private void jButtonAnalisisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalisisActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAnalisisActionPerformed
+
+    private void jButtonRiwayatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRiwayatActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonRiwayatActionPerformed
+
+    private void jButtonSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSettingActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonSettingActionPerformed
+
+    private void jButtonGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGeneralActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonGeneralActionPerformed
+
+    private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonReportActionPerformed
+
+    private void jButtonLogAbsensi2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogAbsensi2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonLogAbsensi2ActionPerformed
+
+    private void jButtonPerformanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPerformanceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonPerformanceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -651,9 +824,19 @@ public class Dashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Sipenta.swing.gradient gradient1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonAnalisis;
+    private javax.swing.JButton jButtonDataKaryawan;
+    private javax.swing.JButton jButtonGeneral;
+    private javax.swing.JButton jButtonKaryawan;
+    private javax.swing.JButton jButtonKehadiran;
+    private javax.swing.JButton jButtonKiosK;
+    private javax.swing.JButton jButtonLogAbsensi;
+    private javax.swing.JButton jButtonLogAbsensi2;
+    private javax.swing.JButton jButtonPengguna;
+    private javax.swing.JButton jButtonPerformance;
+    private javax.swing.JButton jButtonReport;
+    private javax.swing.JButton jButtonRiwayat;
+    private javax.swing.JButton jButtonSetting;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

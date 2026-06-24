@@ -2,8 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sipenta.dao;
-import Sipenta.object.KoneksiMongo;
+package Sipenta.dao;
+import Sipenta.utils.MongoManager;
 import com.mongodb.client.MongoCollection;
 import org.bson.conversions.Bson;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class GenericDAO<T> implements BaseDao<T> {
     // Konstruktor menerima nama koleksi dan kelas entitas untuk mapping otomatis
     public GenericDAO(String collectionName, Class<T> clazz) {
         this.clazz = clazz;
-        this.collection = KoneksiMongo.getDatabase().getCollection(collectionName, clazz);
+        this.collection = MongoManager.getDatabase().getCollection(collectionName, clazz);
     }
 
     @Override

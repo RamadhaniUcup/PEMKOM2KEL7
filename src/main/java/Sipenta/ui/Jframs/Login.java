@@ -4,22 +4,26 @@
  */
 package Sipenta.ui.Jframs;
 
+import Sipenta.services.AuthService;
+import Sipenta.utils.EncryptionUtils;
+import Sipenta.utils.SecurityUtils;
+import java.awt.Frame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ASUS
  */
 public class Login extends javax.swing.JFrame {
     
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
-
     /**
      * Creates new form Login
      */
     public Login() {
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
         initComponents();
-        // jLabel2.setIcon(...);
-        // jLabel4.setIcon(...);
+
+        jTextField1.requestFocus();
     }
 
     /**
@@ -162,24 +166,12 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
-        System.out.println("Tombol login kepencet!");
-        String username = jTextField1.getText();
-        String password = new String(jTextField2.getPassword());
-
-    if(username.equals("admin") && password.equals("123")) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Login berhasil!");
-
-        new Dashboard().setVisible(true); // pindah ke dashboard
-        this.dispose(); // nutup login
-
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Username atau Password salah!");
-    }
-
+        doLogin();
     }//GEN-LAST:event_btn_loginActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
+        doLogin();
+        
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
@@ -198,13 +190,21 @@ public class Login extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Login().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {
+            new Login().setVisible(true);
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -224,4 +224,21 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JPasswordField jTextField2;
     // End of variables declaration//GEN-END:variables
+    
+        private void doLogin() {
+            
+        String username = jTextField1.getText();
+        String password = new String(jTextField2.getPassword());
+
+        if (username.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Mohon isi Username Anda");
+            jTextField1.requestFocus();
+        } else if (password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Mohon isi Password Anda");
+            jTextField2.requestFocus();
+        } else {
+            AuthService userService = new AuthService();
+            userService.login(username, password, this);
+        }
+    }
 }
