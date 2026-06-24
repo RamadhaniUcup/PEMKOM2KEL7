@@ -2,8 +2,8 @@ package Sipenta.Services;
 
 import Sipenta.object.User;
 import sipenta.dao.GenericDAO;
-import Sipenta.View.AdminPage;
-import Sipenta.View.LoginPage;
+import Sipenta.ui.Jframs.Dashboard;
+import Sipenta.ui.Jframs.Login;
 import Sipenta.Util.SecurityUtils;
 import com.mongodb.client.model.Filters;
 import java.awt.Frame;
@@ -22,7 +22,7 @@ public class AuthService {
      * @param plainPassword
      * @param loginPage
      */
-    public void login(String username, String plainPassword, LoginPage loginPage) {
+    public void login(String username, String plainPassword, Login loginPage) {
 
         if (username == null || username.trim().isEmpty()
                 || plainPassword == null || plainPassword.trim().isEmpty()) {
@@ -50,12 +50,12 @@ public class AuthService {
 
             JOptionPane.showMessageDialog(null, "Selamat Datang, " + user.getFullname());
 
-            AdminPage admPage = new AdminPage();
-            admPage.setLocationRelativeTo(null);
-            admPage.setVisible(true);
-            admPage.setExtendedState(Frame.MAXIMIZED_BOTH);
+           Dashboard dashboard = new Dashboard();
+           dashboard.setLocationRelativeTo(null);
+           dashboard.setVisible(true);
+           dashboard.setExtendedState(Frame.MAXIMIZED_BOTH);
 
-            loginPage.setVisible(false);
+           loginPage.setVisible(false);
 
         } else {
             JOptionPane.showMessageDialog(null,
