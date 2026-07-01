@@ -7,12 +7,27 @@ package Sipenta.ui.Jframs;
 import Sipenta.Services.AuthService;
 import java.awt.Frame;
 import javax.swing.JOptionPane;
+import Sipenta.Services.I18nService;
 
 /**
  *
  * @author ASUS
  */
 public class Login extends javax.swing.JFrame {
+    // Tambahkan baris ini di bawah deklarasi class
+private boolean isBahasaIndonesia = true;
+
+// 2. Fungsi untuk mengganti bahasa
+    private void btnGantiBahasaActionPerformed(java.awt.event.ActionEvent evt) {
+        String bahasaTujuan = (isBahasaIndonesia) ? "en" : "id";
+        I18nService.setLocale(java.util.Locale.of(bahasaTujuan));
+        isBahasaIndonesia = !isBahasaIndonesia;
+        
+        // Memperbarui teks pada komponen UI yang ada di kelas ini
+        jLabel10.setText(I18nService.get("ui.login.username"));
+        jLabel3.setText(I18nService.get("ui.login.password"));
+        btn_login.setText(I18nService.get("ui.login.go"));
+    }
     
     /**
      * Creates new form Login
@@ -20,9 +35,15 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         initComponents();
-
+    // Tambahkan ini agar teks langsung berbahasa Indonesia saat dibuka
+        jLabel10.setText(I18nService.get("ui.login.username"));
+        jLabel3.setText(I18nService.get("ui.login.password"));
+        btn_login.setText(I18nService.get("ui.login.go"));
+        
         jTextField1.requestFocus();
     }
+
+  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -224,15 +245,16 @@ public class Login extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
         private void doLogin() {
-            
         String username = jTextField1.getText();
         String password = new String(jTextField2.getPassword());
 
         if (username.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Mohon isi Username Anda");
+            // Memanggil kamus i18n untuk peringatan email kosong
+            JOptionPane.showMessageDialog(this, I18nService.get("ui.login.fillusername")); 
             jTextField1.requestFocus();
         } else if (password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Mohon isi Password Anda");
+            // Memanggil kamus i18n untuk peringatan password kosong
+            JOptionPane.showMessageDialog(this, I18nService.get("ui.login.fillpwd")); 
             jTextField2.requestFocus();
         } else {
             AuthService userService = new AuthService();
