@@ -4,6 +4,12 @@
  */
 package Sipenta.ui.Jframs;
 
+import Sipenta.services.DashboardService;
+import Sipenta.services.DigitalClockService;
+import Sipenta.swing.Pengaturan;
+import java.awt.BorderLayout;
+import Sipenta.swing.Report;
+
 /**
  *
  * @author ASUS
@@ -12,14 +18,42 @@ public class Dashboard extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Dashboard.class.getName());
 
+    private Thread clockThread1;
+    private Thread clockThread2;
     /**
      * Creates new form Dashboard
      */
     public Dashboard() {
         initComponents();
-        setTitle("Dashboard");
-        setSize(600, 400);
+        
+        loadDashboard();
+        
+        DigitalClockService jam =
+            new DigitalClockService(lblJam, "HH:mm:ss");
+        DigitalClockService tanggal =
+            new DigitalClockService(lblTanggal, "dd MMMM yyyy");
+
+        clockThread1 = jam.getThread();
+        clockThread2 = tanggal.getThread();
+
+        clockThread1.start();
+        clockThread2.start();
+        
         setLocationRelativeTo(null);
+    }
+    
+    @Override
+    public void dispose() {
+
+        if (clockThread1 != null) {
+            clockThread1.interrupt();
+        }
+
+        if (clockThread2 != null) {
+            clockThread2.interrupt();
+        }
+
+        super.dispose();
     }
 
     /**
@@ -77,6 +111,8 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         rounpanel2 = new Sipenta.swing.Rounpanel();
         jLabel3 = new javax.swing.JLabel();
+        lblTanggal = new javax.swing.JLabel();
+        lblJam = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jButtonDataKaryawan = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -127,7 +163,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
@@ -186,7 +222,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
@@ -445,7 +481,7 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(rounpanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -454,7 +490,7 @@ public class Dashboard extends javax.swing.JFrame {
                         .addComponent(rounpanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(112, 112, 112)
                         .addComponent(rounpanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(215, Short.MAX_VALUE))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -466,12 +502,13 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(rounpanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(57, 57, 57)
                 .addComponent(rounpanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(319, Short.MAX_VALUE))
+                .addContainerGap(339, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
         jLabel1.setText("Dashboard");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Selamat Datang, Administrator");
 
         rounpanel2.setBackground(new java.awt.Color(0, 0, 102));
@@ -497,6 +534,12 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
+        lblTanggal.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        lblTanggal.setText("Kamis, 02 Juli 2026");
+
+        lblJam.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        lblJam.setText("10:41:14 WIB");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -507,23 +550,33 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(rounpanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(438, 438, 438))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(rounpanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(359, 359, 359))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(687, 687, 687)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblJam)
+                            .addComponent(lblTanggal))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2))
-                    .addComponent(rounpanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(rounpanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(lblTanggal))
+                .addGap(4, 4, 4)
+                .addComponent(lblJam)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -726,7 +779,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonPerformance)
                 .addContainerGap(99, Short.MAX_VALUE))
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 769, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -754,11 +807,19 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonKehadiranActionPerformed
 
     private void jButtonDataKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataKaryawanActionPerformed
-        // TODO add your handling code here:
+        Adminpage1 page = new Adminpage1();
+        page.setVisible(true);
+        page.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        
+        this.setVisible(false);   // tutup Dashboard
     }//GEN-LAST:event_jButtonDataKaryawanActionPerformed
 
     private void jButtonKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonKaryawanActionPerformed
-        // TODO add your handling code here:
+        Adminpage1 page = new Adminpage1();
+        page.setVisible(true);
+        page.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        
+        this.setVisible(false);
     }//GEN-LAST:event_jButtonKaryawanActionPerformed
 
     private void jButtonLogAbsensiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogAbsensiActionPerformed
@@ -778,7 +839,13 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRiwayatActionPerformed
 
     private void jButtonSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSettingActionPerformed
-        // TODO add your handling code here:
+        jPanel1.removeAll();
+        jPanel1.setLayout(new BorderLayout());
+
+        jPanel1.add(new Pengaturan(), BorderLayout.CENTER);
+
+        jPanel1.revalidate();
+        jPanel1.repaint();
     }//GEN-LAST:event_jButtonSettingActionPerformed
 
     private void jButtonGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGeneralActionPerformed
@@ -786,7 +853,13 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonGeneralActionPerformed
 
     private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReportActionPerformed
-        // TODO add your handling code here:
+        jPanel1.removeAll();
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel1.add(new Report(), java.awt.BorderLayout.CENTER);
+
+        jPanel1.revalidate();
+        jPanel1.repaint();
     }//GEN-LAST:event_jButtonReportActionPerformed
 
     private void jButtonLogAbsensi2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogAbsensi2ActionPerformed
@@ -797,6 +870,50 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonPerformanceActionPerformed
 
+    private void loadDashboard(){
+
+        loadTotalKaryawan();
+        loadTotalHadir();
+        loadTotalAlpha();
+        loadLogTerbaru();
+
+    }
+    private void loadTotalKaryawan() {
+
+        DashboardService service = new DashboardService();
+
+        jLabel6.setText(String.valueOf(service.getTotalKaryawan()));
+    }
+    
+    private void loadTotalHadir(){
+
+        DashboardService service = new DashboardService();
+
+        jLabel8.setText(
+            String.valueOf(service.getTotalHadir())
+        );
+
+    }
+    
+    private void loadTotalAlpha(){
+
+        DashboardService service = new DashboardService();
+
+        jLabel10.setText(
+            String.valueOf(service.getTotalAlpha())
+        );
+
+    }
+    
+    private void loadLogTerbaru(){
+
+        DashboardService service = new DashboardService();
+
+        service.loadLogDashboard(jLabel22,jLabel23,jLabel24,jLabel25,jLabel26,jLabel27,
+            jLabel28,jLabel29,jLabel30,jLabel31,jLabel32,jLabel33,jLabel34,jLabel35,jLabel36
+        );
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -876,6 +993,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblJam;
+    private javax.swing.JLabel lblTanggal;
     private Sipenta.swing.Rounpanel rounpanel1;
     private Sipenta.swing.Rounpanel rounpanel2;
     private Sipenta.swing.Rounpanel rounpanel3;

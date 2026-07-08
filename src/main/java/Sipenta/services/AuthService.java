@@ -6,8 +6,8 @@ package Sipenta.services;
 
 import Sipenta.object.User;
 import Sipenta.dao.GenericDAO;
-import Sipenta.ui.Jframs.Adminpage; // Halaman tujuan
 import Sipenta.ui.Jframs.Login;
+import Sipenta.ui.Jframs.Dashboard; 
 import Sipenta.utils.SecurityUtils;
 import com.mongodb.client.model.Filters;
 import java.awt.Frame;
@@ -36,11 +36,16 @@ public class AuthService {
         String hashedInput = SecurityUtils.getHash(plainPassword, SecurityUtils.SHA_256);
 
         // 2. Mencari user di database berdasarkan username DAN password hash [7, 9]
+        System.out.println("Username : " + username);
+        System.out.println("Password : " + plainPassword);
+        System.out.println("Hash : " + hashedInput);
+        
         User user = userDAO.findOne(Filters.and(
                 Filters.eq("username", username),
                 Filters.eq("password", hashedInput)
         ));
         
+        System.out.println("User ditemukan : " + user);
         // 3. Validasi hasil pencarian
         if (user != null) {
             // Update waktu login terakhir
@@ -49,11 +54,12 @@ public class AuthService {
 
             // Berhasil: Masuk ke Halaman Admin
             JOptionPane.showMessageDialog(null, "Selamat Datang, " + user.getFullname());
-            Adminpage admPage = new Adminpage();
-            admPage.setLocationRelativeTo(null); 
-            admPage.setVisible(true);
-            admPage.setExtendedState(Frame.MAXIMIZED_BOTH); 
-            loginPage.setVisible(false); 
+            Dashboard dashboard = new Dashboard();
+            dashboard.setLocationRelativeTo(null); 
+            dashboard.setExtendedState(Frame.MAXIMIZED_BOTH); 
+            dashboard.setVisible(true);
+            
+            loginPage.dispose();
         } else {
             // Gagal: Notifikasi Error
             JOptionPane.showMessageDialog(null,
@@ -82,6 +88,8 @@ public class AuthService {
         // 3. Operasi Create: Menyimpan dokumen user ke koleksi MongoDB melalui GenericDAO [3], [4]
         try {
             userDAO.save(newUser); // Memanggil insertOne melalui GenericDAO [5]
+            JOptionPane.showMessageDialog(null,
+                    "Admin berhasil ditambahkan.");
         } catch (Exception e) {
             // Standar Debugging: Mengidentifikasi error log secara mandiri [6]
             JOptionPane.showMessageDialog(null, "Gagal mendaftarkan user: " + e.getMessage());

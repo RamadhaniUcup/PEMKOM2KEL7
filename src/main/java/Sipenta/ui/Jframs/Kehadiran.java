@@ -5,6 +5,9 @@
 package Sipenta.ui.Jframs;
 
 import Sipenta.services.DigitalClockService;
+import Sipenta.services.KehadiranService;
+import Sipenta.object.Karyawan;
+import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 
 /**
@@ -21,6 +24,7 @@ public class Kehadiran extends javax.swing.JFrame {
         initComponents();
         
         initClock(jLabel1);
+        jTextField1.addActionListener(this::prosesTapKartu);
     }
 
     /**
@@ -92,6 +96,11 @@ public class Kehadiran extends javax.swing.JFrame {
         jLabel4.setText("Silahkan Tap Kartu Anda");
 
         jTextField1.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -169,6 +178,12 @@ public class Kehadiran extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        String uid = jTextField1.getText();
+
+        System.out.println(uid);
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -236,5 +251,37 @@ public class Kehadiran extends javax.swing.JFrame {
         clockThread.start();
         
         System.out.println("Memulai: " + clockThread.getName() + " (Daemon: " + clockThread.isDaemon() + ")");
+    }
+    
+    private void prosesTapKartu(ActionEvent evt){
+
+        String uid = jTextField1.getText().trim();
+
+        if(uid.isEmpty()){
+            return;
+        }
+
+        KehadiranService service = new KehadiranService();
+
+        Karyawan karyawan = service.cariKaryawan(uid);
+
+        if(karyawan == null){
+
+            jLabel3.setText("Nama : Tidak ditemukan");
+            jLabel5.setText("ID : -");
+            jLabel8.setText("Departemen : -");
+
+        }else{
+
+            jLabel3.setText("Nama : " + karyawan.getNama());
+            jLabel5.setText("NIP : " + karyawan.getNip());
+            jLabel8.setText("Jabatan : " + karyawan.getJabatan());
+
+            service.simpanAbsensi(uid);
+
+        }
+
+        jTextField1.setText("");
+
     }
 }

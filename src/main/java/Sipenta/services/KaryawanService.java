@@ -5,7 +5,7 @@
 package Sipenta.services;
 
 import Sipenta.object.Karyawan;
-import Sipenta.ui.Jframs.Adminpage;
+import Sipenta.ui.Jframs.Adminpage1;
 import Sipenta.dao.GenericDAO;
 import com.mongodb.client.model.Filters;
 import java.awt.BorderLayout;
@@ -59,19 +59,27 @@ public class KaryawanService {
         panelTarget.removeAll();
         panelTarget.setLayout(new BorderLayout());
 
-        JPanel gridPanel = new JPanel(new GridLayout(0, 3, 10, 10));
+        JPanel gridPanel = new JPanel();
+        gridPanel.setLayout(new GridLayout(0, 3, 15, 15));
 
         for (Karyawan k : daftarKaryawan) {
-            JPanel card = new JPanel();
-            card.setLayout(new GridLayout(5, 1, 0, 5));
-            card.setPreferredSize(new java.awt.Dimension(300, 150));
-            card.setBorder(javax.swing.BorderFactory.createEmptyBorder(
-                10, 10, 10, 10));
+            JPanel card = new JPanel(new BorderLayout());
+            card.setPreferredSize(new java.awt.Dimension(250, 170));
+            card.setBackground(new java.awt.Color(180,180,180));
+            card.setBorder(javax.swing.BorderFactory.createEmptyBorder(10,10,10,10));
             
             JLabel lblNama = new JLabel("Nama : " + k.getNama());
             JLabel lblID = new JLabel("ID Karyawan : " + k.getId());
             JLabel lblNip = new JLabel("NIP : " + k.getNip());
             JLabel lblJabatan = new JLabel("Jabatan : " + k.getJabatan());
+            
+            JPanel isi = new JPanel();
+            isi.setOpaque(false);
+            isi.setLayout(new GridLayout(4,1));
+            isi.add(lblNama);
+            isi.add(lblID);
+            isi.add(lblNip);
+            isi.add(lblJabatan);
             
             JPanel tombolPanel = new JPanel(new GridLayout(1, 2, 5, 0));
             
@@ -79,31 +87,28 @@ public class KaryawanService {
             JButton btnDelete = new JButton("Delete");
             
             btnEdit.addActionListener((ActionEvent e) -> {
-                Adminpage.idKaryawanEdit = k.getId();
-                Adminpage.txtUID.setText(k.getRfid());
-                Adminpage.txtID.setText(k.getNip());
-                Adminpage.txtNama.setText(k.getNama());
-                Adminpage.cbDepartemen.setSelectedItem(k.getJabatan());
+                Adminpage1.idKaryawanEdit = k.getId();
+                Adminpage1.txtUID.setText(k.getRfid());
+                Adminpage1.txtID.setText(k.getNip());
+                Adminpage1.txtNama.setText(k.getNama());
+                Adminpage1.cbDepartemen.setSelectedItem(k.getJabatan());
             });
             
             btnDelete.addActionListener((ActionEvent e) -> {
                 deleteKaryawan(k.getId());
+                tampilKaryawan(panelTarget, key);
             });
         
             tombolPanel.add(btnEdit);
             tombolPanel.add(btnDelete);
 
-            card.add(lblNama);
-            card.add(lblID);
-            card.add(lblNip);
-            card.add(lblJabatan);
-            card.add(tombolPanel);
+            card.add(isi, BorderLayout.CENTER);
+            card.add(tombolPanel, BorderLayout.SOUTH);
 
             gridPanel.add(card);
         }
-        
         panelTarget.add(gridPanel, BorderLayout.NORTH);
-
+        
         panelTarget.revalidate();
         panelTarget.repaint();
     }

@@ -28,14 +28,16 @@ public class DigitalClockService {
      */
     public Thread getThread() {
         Runnable clockTask = () -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.of("id", "ID"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, new Locale("id", "ID"));
             try {
                 while (!Thread.currentThread().isInterrupted()) {
                     LocalDateTime now = LocalDateTime.now();
                     String timeFormatted = now.format(formatter);
                     
                     // Update label secara asinkron
-                    targetLabel.setText(timeFormatted);
+                    javax.swing.SwingUtilities.invokeLater(() -> {
+                        targetLabel.setText(timeFormatted);
+                    });
                     
                     Thread.sleep(1000);
                 }
