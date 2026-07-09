@@ -1,333 +1,285 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Sipenta.Services;
 
-import Sipenta.View.AdminPage;
-import sipenta.dao.GenericDAO;
-import com.mongodb.client.model.Filters;
+import Sipenta.View.AdminPanel;
 import Sipenta.Util.EncryptionUtils;
-import Sipenta.Util.SecurityUtils;
+import sipenta.dao.GenericDAO;
+import sipenta.dao.Karyawan;
+
+import com.mongodb.client.model.Filters;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import org.bson.conversions.Bson;
-import sipenta.dao.Karyawan;
+import javax.swing.border.EmptyBorder;
 
-/**
- *
- * @author mnish
- */
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
+
 public class KaryawanService {
 
-    // Inisialisasi GenericDAO khusus untuk entitas Karyawan
-    // Menggunakan koleksi "karyawan" dan referensi Class Karyawan
     private final GenericDAO<Karyawan> DAO;
 
     public KaryawanService() {
-        this.DAO = new GenericDAO<>("karyawan", Karyawan.class);
+        DAO = new GenericDAO<>("karyawan", Karyawan.class);
     }
 
-    /*
-     * Mengecek apakah sebuah string sudah berbentuk hash SHA-256.
-     * Hash SHA-256 biasanya panjangnya 64 karakter hexadecimal.
-     */
-    private boolean isSha256Hash(String value) {
-        return value != null && value.matches("^[a-fA-F0-9]{64}$");
-    }
+    // =====================================================
+    // SAVE
+    // =====================================================
+    public void tambahKaryawan(Karyawan k) {
 
-    /*
-     * RFID dibuat satu arah menggunakan SHA-256.
-     * Jika RFID sudah berupa hash, maka tidak di-hash ulang.
-     */
-    private String hashRfidIfNeeded(String rfid) {
-        if (rfid == null || rfid.isEmpty()) {
-            return rfid;
+        if (k.getNip() != null && !k.getNip().isEmpty()) {
+            String encrypt = EncryptionUtils.encrypt(k.getNip());
+
+            if (encrypt != null) {
+                k.setNip(encrypt);
+            }
         }
 
-        if (isSha256Hash(rfid)) {
-            return rfid;
-        }
-
-        return SecurityUtils.getHash(rfid, SecurityUtils.SHA_256);
+        DAO.save(k);
     }
 
-    /*
-     * NIP didekripsi saat ingin ditampilkan.
-     * Jika gagal decrypt, maka akan mengembalikan data aslinya.
-     */
-    private String decryptNip(String nip) {
-        if (nip == null || nip.isEmpty()) {
-            return nip;
-        }
-
-        String hasilDecrypt = EncryptionUtils.decrypt(nip);
-
-        if (hasilDecrypt == null) {
-            return nip;
-        }
-
-        return hasilDecrypt;
-    }
-
-    /**
-     * 1.CREATE: Fungsi untuk menyimpan data karyawan baru ke MongoDB
-     *
-     * @param karyawanBaru
-     */
-    public void tambahKaryawan(Karyawan karyawanBaru) {
-        String rfidHash = hashRfidIfNeeded(karyawanBaru.getRfid());
-        String nipEncrypt = EncryptionUtils.encrypt(karyawanBaru.getNip());
-
-        karyawanBaru.setRfid(rfidHash);
-        karyawanBaru.setNip(nipEncrypt);
-
-        DAO.save(karyawanBaru);
-    }
-
-    public void tambahKaryawan(String rfid, String nip, String nama, String jabatan) {
-        String rfidHash = hashRfidIfNeeded(rfid);
-        String nipEncrypt = EncryptionUtils.encrypt(nip);
-
-        Karyawan karyawanBaru = new Karyawan(rfidHash, nipEncrypt, nama, jabatan);
-
-        DAO.save(karyawanBaru);
-    }
-
-    /**
-     * 2. READ (All): Fungsi untuk mengambil semua data karyawan
-     */
-    public void tampilkanDaftarKaryawan() {
-        List<Karyawan> daftar = DAO.findAll();
-
-        System.out.println("--- Daftar Karyawan ---");
-
-        for (Karyawan k : daftar) {
-            System.out.println(k.toString());
-        }
-    }
-
-    /**
-     * 2.READ (All): Fungsi untuk mengambil semua data karyawan
-     *
-     * @param panelTarget
-     * @param key
-     */
+    // =====================================================
+    // TAMPIL DATA
+    // =====================================================
     public void tampilKaryawan(JPanel panelTarget, String key) {
-        List<Karyawan> daftarKaryawan;
 
-        if (key.isEmpty()) {
-            daftarKaryawan = DAO.findAll();
+        List<Karyawan> list;
+
+        if (key == null || key.trim().isEmpty()) {
+            list = DAO.findAll();
         } else {
-            daftarKaryawan = cariKaryawan(key);
+
+            list = DAO.findMany(
+                    Filters.or(
+                            Filters.regex("nama", key, "i"),
+                            Filters.regex("jabatan", key, "i"),
+                            Filters.regex("uid", key, "i")
+                    )
+            );
         }
 
         panelTarget.removeAll();
-
         panelTarget.setLayout(new BorderLayout());
-        panelTarget.setBackground(new Color(15, 23, 42));
 
-        JPanel gridPanel = new JPanel(new GridLayout(0, 3, 10, 10));
-        gridPanel.setOpaque(false);
-        gridPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // Warna tema, senada dengan sidebar aplikasi (navy)
+        final Color NAVY_ACCENT  = new Color(66, 133, 244);
+        final Color ACCENT_HOVER = new Color(40, 100, 220);
+        final Color BG_SOFT      = new Color(15, 15, 45);
+        final Color DANGER       = new Color(234, 67, 53);
+        final Color DANGER_HOVER = new Color(200, 45, 35);
+
+        JPanel listWrap = new JPanel();
+        listWrap.setLayout(new BoxLayout(listWrap, BoxLayout.Y_AXIS));
+        listWrap.setBackground(BG_SOFT);
+        listWrap.setBorder(new EmptyBorder(16, 16, 16, 16));
+
+        for (Karyawan k : list) {
+
+            String nipDecrypt = k.getNip();
+            if (nipDecrypt != null) {
+                String hasil = EncryptionUtils.decrypt(nipDecrypt);
+                if (hasil != null) {
+                    nipDecrypt = hasil;
+                }
+            }
+            final String nip = nipDecrypt;
+
+            // ===== Kartu utama =====
+            JPanel card = new JPanel();
+            card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+            card.setBackground(Color.WHITE);
+            card.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+            card.setMaximumSize(new Dimension(560, 160));
+            card.setBorder(new EmptyBorder(16, 20, 16, 20));
+
+            // ===== Baris 1: Nama | ID Karyawan =====
+            JPanel row1 = new JPanel(new GridLayout(1, 2));
+            row1.setOpaque(false);
+            row1.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+            row1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 22));
+
+            JLabel lblNama = new JLabel("Nama: " + safe(k.getNama()));
+            lblNama.setFont(new Font("SansSerif", Font.PLAIN, 13));
+            lblNama.setForeground(new Color(30, 30, 30));
+
+            JLabel lblIdKaryawan = new JLabel("ID Karyawan: " + safe(k.getIdKaryawan()));
+            lblIdKaryawan.setFont(new Font("SansSerif", Font.PLAIN, 13));
+            lblIdKaryawan.setForeground(new Color(30, 30, 30));
+
+            row1.add(lblNama);
+            row1.add(lblIdKaryawan);
+
+            // ===== Baris 2: Jabatan | NIP =====
+            JPanel row2 = new JPanel(new GridLayout(1, 2));
+            row2.setOpaque(false);
+            row2.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+            row2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 22));
+
+            JLabel lblJabatan = new JLabel("Jabatan: " + safe(k.getJabatan()));
+            lblJabatan.setFont(new Font("SansSerif", Font.PLAIN, 13));
+            lblJabatan.setForeground(new Color(30, 30, 30));
+
+            JLabel lblNip = new JLabel("NIP: " + safe(nip));
+            lblNip.setFont(new Font("SansSerif", Font.PLAIN, 13));
+            lblNip.setForeground(new Color(30, 30, 30));
+
+            row2.add(lblJabatan);
+            row2.add(lblNip);
+
+            card.add(row1);
+            card.add(Box.createVerticalStrut(6));
+            card.add(row2);
+            card.add(Box.createVerticalStrut(16));
+
+            // ===== Tombol Edit & Delete =====
+            JPanel actionRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+            actionRow.setOpaque(false);
+            actionRow.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+            actionRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 34));
+
+            JButton edit = buatTombolRounded("Edit", NAVY_ACCENT, ACCENT_HOVER);
+            JButton hapus = buatTombolRounded("Delete", DANGER, DANGER_HOVER);
+
+            edit.addActionListener(e -> {
+
+                AdminPanel.idKaryawanEdit = k.getIdHex();
+                AdminPanel.txtUid.setText(k.getUid());
+                AdminPanel.txtnip.setText(nip);
+                AdminPanel.txtkaryawan.setText(k.getNama());
+                AdminPanel.txtJabatan.setSelectedItem(k.getJabatan());
+
+                // UID dikunci saat mode edit, karena UID sudah terikat
+                // ke kartu RFID fisik dan tidak boleh diubah sembarangan
+                AdminPanel.txtUid.setEditable(false);
+                AdminPanel.txtUid.setEnabled(false);
+
+                AdminPanel.btnUpdate.setEnabled(true);
+                AdminPanel.btnSimpan.setEnabled(false);
+
+            });
+
+            hapus.addActionListener(e -> {
+
+                hapusKaryawan(k.getIdHex());
+
+            });
+
+            actionRow.add(edit);
+            actionRow.add(hapus);
+            card.add(actionRow);
+
+            listWrap.add(card);
+            listWrap.add(Box.createVerticalStrut(14));
+        }
+
+        panelTarget.add(listWrap, BorderLayout.NORTH);
+
+        panelTarget.revalidate();
+        panelTarget.repaint();
+
+    }
+
+    // Tombol rounded kecil (biru untuk Edit, merah untuk Delete)
+    private JButton buatTombolRounded(String teks, Color warnaDasar, Color warnaHover) {
+
+        JButton btn = new JButton(teks) {
+            @Override
+            protected void paintComponent(java.awt.Graphics g) {
+                java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+                g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+                        java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(getModel().isRollover() ? warnaHover : warnaDasar);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+                g2.dispose();
+                super.paintComponent(g);
+            }
+        };
+        btn.setContentAreaFilled(false);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setForeground(Color.WHITE);
+        btn.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        btn.setPreferredSize(new Dimension(80, 30));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setRolloverEnabled(true);
+
+        return btn;
+    }
+
+    // Bantu tampilkan "-" kalau data null/kosong
+    private String safe(String val) {
+        return (val == null || val.isEmpty()) ? "-" : val;
+    }
+
+
+
+    // =====================================================
+    // UPDATE
+    // =====================================================
+    public void updateKaryawan(Karyawan k) {
+
+        if (k.getNip() != null && !k.getNip().isEmpty()) {
+
+            String encrypt = EncryptionUtils.encrypt(k.getNip());
+
+            if (encrypt != null) {
+                k.setNip(encrypt);
+            }
+        }
+
+        Bson filter = Filters.eq("_id", k.getId());
+
+        DAO.update(filter, k);
+
+        AdminPanel.showData("");
+
+    }
+
+    // =====================================================
+    // DELETE
+    // =====================================================
+    public void hapusKaryawan(String id) {
+
+        DAO.delete(Filters.eq("_id", new ObjectId(id)));
+
+        AdminPanel.showData("");
+
+    }
+
+    // =====================================================
+    // LOGIN RFID
+    // =====================================================
+    public Karyawan getKaryawanByNip(String nipAsli) {
 
         try {
-            for (Karyawan k : daftarKaryawan) {
 
-                JPanel cardPanel = new JPanel(new GridLayout(4, 1, 0, 0));
-                cardPanel.setBackground(new Color(255, 255, 255));
+            String encrypt = EncryptionUtils.encrypt(nipAsli);
 
-                cardPanel.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(new Color(30, 41, 59), 1, true),
-                        BorderFactory.createEmptyBorder(10, 15, 10, 15)
-                ));
-
-                JLabel lblNama = new JLabel("Nama: " + k.getNamaLengkap());
-                lblNama.setForeground(new Color(33, 37, 41));
-
-                JLabel lblIDK = new JLabel("ID Karyawan: " + k.getId());
-                lblIDK.setForeground(new Color(33, 37, 41));
-
-                JLabel lbljab = new JLabel("Jabatan: " + k.getJabatan());
-                lbljab.setForeground(new Color(33, 37, 41));
-
-                String nipAsli = decryptNip(k.getNip());
-                JLabel lblnip = new JLabel("NIP: " + nipAsli);
-                lblnip.setForeground(new Color(33, 37, 41));
-
-                JPanel controlPanel = new JPanel(new GridLayout(1, 2, 12, 0));
-                controlPanel.setBackground(new Color(255, 255, 255));
-
-                JButton tombolEdit = new JButton("Edit");
-                tombolEdit.setBackground(new Color(59, 130, 246));
-                tombolEdit.setForeground(Color.WHITE);
-                tombolEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-                tombolEdit.addActionListener((ActionEvent e) -> {
-                    AdminPage.idKaryawanEdit = k.getId();
-
-                    /*
-                     * RFID sudah di-hash, jadi tidak bisa dikembalikan ke RFID asli.
-                     * Karena itu field UID dibuat tidak bisa diedit.
-                     */
-                    AdminPage.txtUid.setText(k.getRfid());
-                    AdminPage.txtUid.setEnabled(false);
-
-                    /*
-                     * NIP bisa didecrypt karena menggunakan AES.
-                     */
-                    AdminPage.txtnip.setText(nipAsli);
-                    AdminPage.txtnip.setEnabled(false);
-
-                    AdminPage.txtkaryawan.setText(k.getNama());
-                    AdminPage.txtJabatan.setSelectedItem(k.getJabatan());
-
-                    AdminPage.btnUpdate.setEnabled(true);
-                    AdminPage.btnSimpan.setEnabled(false);
-                });
-
-                JButton tombolDelete = new JButton("Delete");
-                tombolDelete.setBackground(new Color(239, 68, 68));
-                tombolDelete.setForeground(Color.WHITE);
-                tombolDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-                tombolDelete.addActionListener((ActionEvent e) -> {
-                    Object[] options = {"Ya, Hapus", "Batal"};
-
-                    int choice = JOptionPane.showOptionDialog(
-                            null,
-                            "Apakah Anda ingin menghapus data " + k.getNamaLengkap() + "?",
-                            "Konfirmasi Pengelolaan",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[0]
-                    );
-
-                    switch (choice) {
-                        case JOptionPane.YES_OPTION -> hapusKaryawan(k.getId());
-                        case JOptionPane.NO_OPTION -> System.out.println("User memilih: Batal");
-                        default -> {
-                        }
-                    }
-                });
-
-                controlPanel.add(tombolEdit);
-                controlPanel.add(tombolDelete);
-
-                cardPanel.add(lblNama);
-                cardPanel.add(lblIDK);
-                cardPanel.add(lbljab);
-                cardPanel.add(lblnip);
-                cardPanel.add(controlPanel);
-
-                gridPanel.add(cardPanel);
+            if (encrypt == null) {
+                encrypt = nipAsli;
             }
 
-            panelTarget.add(gridPanel, BorderLayout.NORTH);
-
-            panelTarget.revalidate();
-            panelTarget.repaint();
+            return DAO.findOne(Filters.eq("nip", encrypt));
 
         } catch (Exception e) {
-            System.err.println("Error saat menampilkan data karyawan: " + e.getMessage());
-        }
-    }
 
-    /**
-     * 3.READ: Mencari data karyawan berdasarkan keyword.
-     *
-     * @param key
-     * @return
-     */
-    public List<Karyawan> cariKaryawan(String key) {
-        List<Bson> filters = new ArrayList<>();
+            e.printStackTrace();
+            return null;
 
-        for (Field field : Karyawan.class.getDeclaredFields()) {
-
-            /*
-             * RFID dan NIP tidak dipakai untuk pencarian biasa
-             * karena RFID sudah di-hash dan NIP sudah dienkripsi.
-             */
-            if (field.getName().equals("uidRfid")
-                    || field.getName().equals("rfid")
-                    || field.getName().equals("nip")) {
-                continue;
-            }
-
-            filters.add(Filters.regex(field.getName(), key, "i"));
         }
 
-        if (filters.isEmpty()) {
-            return DAO.findAll();
-        }
-
-        return DAO.findMany(Filters.or(filters));
-    }
-
-    /**
-     * Method ini dipakai untuk proses tap kartu.
-     * RFID asli dari kartu akan di-hash dulu, lalu dicari di database.
-     *
-     * @param rfidAsli
-     * @return
-     */
-    public Karyawan findByRfid(String rfidAsli) {
-        String rfidHash = hashRfidIfNeeded(rfidAsli);
-
-        Bson filter = Filters.eq("rfid", rfidHash);
-
-        return DAO.findOne(filter);
-    }
-
-    /**
-     * 4.UPDATE: Memperbarui data karyawan menggunakan filter ObjectId.
-     *
-     * @param newK
-     */
-    public void updateKaryawan(Karyawan newK) {
-        Bson filter = Filters.eq("_id", new org.bson.types.ObjectId(newK.getId()));
-
-        Karyawan k = DAO.findOne(filter);
-
-        if (k != null) {
-            String rfidHash = hashRfidIfNeeded(newK.getRfid());
-            String nipEncrypt = EncryptionUtils.encrypt(newK.getNip());
-
-            newK.setRfid(rfidHash);
-            newK.setNip(nipEncrypt);
-
-            DAO.update(filter, newK);
-
-            AdminPage.showData("");
-            JOptionPane.showMessageDialog(null, "Data berhasil diperbarui!");
-        }
-    }
-
-    /**
-     * 5.DELETE: Menghapus data karyawan dari database
-     *
-     * @param idK
-     */
-    public void hapusKaryawan(String idK) {
-        Bson filter = Filters.eq("_id", new org.bson.types.ObjectId(idK));
-
-        DAO.delete(filter);
-
-        AdminPage.showData("");
-        JOptionPane.showMessageDialog(null, "Data karyawan berhasil dihapus.");
     }
 
 }

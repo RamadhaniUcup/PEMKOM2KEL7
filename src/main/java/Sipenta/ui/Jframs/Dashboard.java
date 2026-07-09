@@ -3,29 +3,39 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Sipenta.ui.Jframs;
-
-import Sipenta.View.AdminPage;
 import java.awt.BorderLayout;
-import java.awt.Container;
-
+import Sipenta.ui.Jframs.Settings;
+import Sipenta.View.AdminPanel;
+import Sipenta.Services.I18nService;
 
 /**
  *
  * @author ASUS
  */
-public class Dashboard extends javax.swing.JFrame {
+public class Dashboard extends javax.swing.JFrame
+        implements I18nService.I18nChangeListener {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Dashboard.class.getName());
 
     /**
      * Creates new form Dashboard
      */
-    public Dashboard() {
-        initComponents();
-        setTitle("Dashboard");
-        setSize(600, 400);
-        setLocationRelativeTo(null);
-    }
+   public Dashboard() {
+    initComponents();
+
+    setTitle("Dashboard");
+    setSize(600,400);
+    setLocationRelativeTo(null);
+
+    I18nService.registerListener(this);
+    onLanguageChanged();
+}
+
+@Override
+public void dispose() {
+    I18nService.unregisterListener(this);
+    super.dispose();
+}
                                                    
     
 
@@ -88,23 +98,17 @@ public class Dashboard extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jButtonDataKaryawan = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jButtonPengguna = new javax.swing.JButton();
-        jButtonKehadiran = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jButtonKaryawan = new javax.swing.JButton();
+        btnKaryawan = new javax.swing.JButton();
         jButtonLogAbsensi = new javax.swing.JButton();
         jButtonKiosK = new javax.swing.JButton();
-        jButtonAnalisis = new javax.swing.JButton();
-        jButtonRiwayat = new javax.swing.JButton();
-        jButtonSetting = new javax.swing.JButton();
-        jButtonGeneral = new javax.swing.JButton();
-        jButtonReport = new javax.swing.JButton();
-        jButtonLogAbsensi2 = new javax.swing.JButton();
-        jButtonPerformance = new javax.swing.JButton();
+        btnSeting = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         gradient1.setPreferredSize(new java.awt.Dimension(1579, 769));
+
+        jPanel3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -135,7 +139,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
@@ -194,7 +198,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
@@ -388,7 +392,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(jLabel22)
                     .addComponent(jLabel23)
                     .addComponent(jLabel24))
-                .addGap(141, 141, 141)
+                .addGap(145, 145, 145)
                 .addGroup(rounpanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel25)
                     .addComponent(jLabel26)
@@ -458,7 +462,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(rounpanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(rounpanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(134, 134, 134)
+                        .addGap(116, 116, 116)
                         .addComponent(rounpanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(112, 112, 112)
                         .addComponent(rounpanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -472,7 +476,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(rounpanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(rounpanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(rounpanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(57, 57, 57)
+                .addGap(73, 73, 73)
                 .addComponent(rounpanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(319, Short.MAX_VALUE))
         );
@@ -513,10 +517,12 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(239, 239, 239))
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(rounpanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(438, 438, 438))
@@ -524,20 +530,21 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2))
-                    .addComponent(rounpanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(rounpanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jButtonDataKaryawan.setBackground(new java.awt.Color(204, 204, 204));
         jButtonDataKaryawan.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonDataKaryawan.setText("Data Karyawan");
+        jButtonDataKaryawan.setText("Dashboard");
         jButtonDataKaryawan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonDataKaryawanActionPerformed(evt);
@@ -548,38 +555,18 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("SIPENTA");
 
-        jButtonPengguna.setBackground(new java.awt.Color(204, 204, 255));
-        jButtonPengguna.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonPengguna.setText("Pengguna");
-        jButtonPengguna.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPenggunaActionPerformed(evt);
-            }
-        });
-
-        jButtonKehadiran.setBackground(new java.awt.Color(204, 204, 204));
-        jButtonKehadiran.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonKehadiran.setText("Kehadiran");
-        jButtonKehadiran.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonKehadiranActionPerformed(evt);
-            }
-        });
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 255));
         jLabel5.setText("Enterprise edition");
 
-        jButtonKaryawan.setBackground(new java.awt.Color(204, 204, 255));
-        jButtonKaryawan.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonKaryawan.setText("Karyawan");
-        jButtonKaryawan.addActionListener(new java.awt.event.ActionListener() {
+        btnKaryawan.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        btnKaryawan.setText("Karyawan");
+        btnKaryawan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonKaryawanActionPerformed(evt);
+                btnKaryawanActionPerformed(evt);
             }
         });
 
-        jButtonLogAbsensi.setBackground(new java.awt.Color(204, 204, 255));
         jButtonLogAbsensi.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jButtonLogAbsensi.setText("Log Absensi");
         jButtonLogAbsensi.addActionListener(new java.awt.event.ActionListener() {
@@ -588,75 +575,19 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jButtonKiosK.setBackground(new java.awt.Color(204, 204, 255));
         jButtonKiosK.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonKiosK.setText("Kios K");
+        jButtonKiosK.setText("Absensi");
         jButtonKiosK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonKiosKActionPerformed(evt);
             }
         });
 
-        jButtonAnalisis.setBackground(new java.awt.Color(204, 204, 255));
-        jButtonAnalisis.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonAnalisis.setText("Analisis");
-        jButtonAnalisis.addActionListener(new java.awt.event.ActionListener() {
+        btnSeting.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        btnSeting.setText("Pengaturan");
+        btnSeting.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAnalisisActionPerformed(evt);
-            }
-        });
-
-        jButtonRiwayat.setBackground(new java.awt.Color(204, 204, 255));
-        jButtonRiwayat.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonRiwayat.setText("Riwayat");
-        jButtonRiwayat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRiwayatActionPerformed(evt);
-            }
-        });
-
-        jButtonSetting.setBackground(new java.awt.Color(204, 204, 204));
-        jButtonSetting.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonSetting.setText("Setting");
-        jButtonSetting.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSettingActionPerformed(evt);
-            }
-        });
-
-        jButtonGeneral.setBackground(new java.awt.Color(204, 204, 255));
-        jButtonGeneral.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonGeneral.setText("General");
-        jButtonGeneral.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonGeneralActionPerformed(evt);
-            }
-        });
-
-        jButtonReport.setBackground(new java.awt.Color(204, 204, 204));
-        jButtonReport.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonReport.setText("Report");
-        jButtonReport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonReportActionPerformed(evt);
-            }
-        });
-
-        jButtonLogAbsensi2.setBackground(new java.awt.Color(204, 204, 255));
-        jButtonLogAbsensi2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonLogAbsensi2.setText("Log Absensi");
-        jButtonLogAbsensi2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonLogAbsensi2ActionPerformed(evt);
-            }
-        });
-
-        jButtonPerformance.setBackground(new java.awt.Color(204, 204, 255));
-        jButtonPerformance.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButtonPerformance.setText("Performance");
-        jButtonPerformance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPerformanceActionPerformed(evt);
+                btnSetingActionPerformed(evt);
             }
         });
 
@@ -666,37 +597,30 @@ public class Dashboard extends javax.swing.JFrame {
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gradient1Layout.createSequentialGroup()
                 .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradient1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(gradient1Layout.createSequentialGroup()
                         .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradient1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(gradient1Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
                                 .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4)))
-                            .addGroup(gradient1Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jButtonDataKaryawan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButtonKaryawan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButtonLogAbsensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButtonPengguna, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(gradient1Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonKehadiran, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonKiosK, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonAnalisis, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonRiwayat, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonSetting, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonReport, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonLogAbsensi2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonPerformance, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(gradient1Layout.createSequentialGroup()
+                                        .addGap(53, 53, 53)
+                                        .addComponent(jLabel5))
+                                    .addGroup(gradient1Layout.createSequentialGroup()
+                                        .addGap(27, 27, 27)
+                                        .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jButtonKiosK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jButtonLogAbsensi, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnKaryawan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonDataKaryawan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnSeting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(gradient1Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         gradient1Layout.setVerticalGroup(
@@ -707,118 +631,58 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonDataKaryawan)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonKaryawan)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonLogAbsensi)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonPengguna)
-                .addGap(32, 32, 32)
-                .addComponent(jButtonKehadiran)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(37, 37, 37)
+                .addComponent(btnKaryawan)
+                .addGap(36, 36, 36)
                 .addComponent(jButtonKiosK)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonRiwayat)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonAnalisis)
-                .addGap(24, 24, 24)
-                .addComponent(jButtonSetting)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonGeneral)
-                .addGap(39, 39, 39)
-                .addComponent(jButtonReport)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonLogAbsensi2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonPerformance)
-                .addContainerGap(99, Short.MAX_VALUE))
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(41, 41, 41)
+                .addComponent(jButtonLogAbsensi)
+                .addGap(37, 37, 37)
+                .addComponent(btnSeting)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 769, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(gradient1, javax.swing.GroupLayout.PREFERRED_SIZE, 1305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(gradient1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        jPanel3.getAccessibleContext().setAccessibleDescription("");
+
+        getContentPane().add(gradient1, java.awt.BorderLayout.WEST);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-     
-    private void jButtonPenggunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPenggunaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonPenggunaActionPerformed
 
-    private void jButtonKehadiranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonKehadiranActionPerformed
-       
-    }//GEN-LAST:event_jButtonKehadiranActionPerformed
-
-    private void jButtonDataKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataKaryawanActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonDataKaryawanActionPerformed
-
-    private void jButtonKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonKaryawanActionPerformed
-        Sipenta.View.AdminPage adminPage = new Sipenta.View.AdminPage();
-            adminPage.setLocationRelativeTo(this);
-            adminPage.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-            adminPage.setVisible(true);
-    }//GEN-LAST:event_jButtonKaryawanActionPerformed
-
-    private void jButtonLogAbsensiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogAbsensiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonLogAbsensiActionPerformed
+    private void btnSetingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetingActionPerformed
+        showPage(new Settings());
+    }//GEN-LAST:event_btnSetingActionPerformed
 
     private void jButtonKiosKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonKiosKActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this, "Tombol Kios K diklik");
-
-    try {
-        Kehadiran kehadiran = new Kehadiran();
-        kehadiran.setLocationRelativeTo(this);
-        kehadiran.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-        kehadiran.setVisible(true);
-    } catch (Exception e) {
-        e.printStackTrace();
-        javax.swing.JOptionPane.showMessageDialog(this, 
-                "Gagal membuka halaman Kehadiran: " + e.getMessage());
-    }
+         showPage(new Absensi().getContentPane());
     }//GEN-LAST:event_jButtonKiosKActionPerformed
 
-    private void jButtonAnalisisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalisisActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonAnalisisActionPerformed
+    private void jButtonLogAbsensiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogAbsensiActionPerformed
+         showPage(new PanelLogAbsensi());
+    }//GEN-LAST:event_jButtonLogAbsensiActionPerformed
 
-    private void jButtonRiwayatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRiwayatActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonRiwayatActionPerformed
+    private void btnKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKaryawanActionPerformed
+         showPage(new AdminPanel());
+    }//GEN-LAST:event_btnKaryawanActionPerformed
 
-    private void jButtonSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSettingActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonSettingActionPerformed
+    private void jButtonDataKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataKaryawanActionPerformed
+        this.dispose();
+        java.awt.EventQueue.invokeLater(() -> new Dashboard().setVisible(true));
+    }//GEN-LAST:event_jButtonDataKaryawanActionPerformed
+     private void showPage(java.awt.Component panel) {
 
-    private void jButtonGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGeneralActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonGeneralActionPerformed
+    jPanel3.removeAll();
+    jPanel3.setLayout(new BorderLayout());
 
-    private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReportActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonReportActionPerformed
+    jPanel3.add(panel, BorderLayout.CENTER);
 
-    private void jButtonLogAbsensi2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogAbsensi2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonLogAbsensi2ActionPerformed
-
-    private void jButtonPerformanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPerformanceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonPerformanceActionPerformed
-
+    jPanel3.revalidate();
+    jPanel3.repaint();
+}
+    
     /**
      * @param args the command line arguments
      */
@@ -844,21 +708,55 @@ public class Dashboard extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new Dashboard().setVisible(true));
     }
 
+    @Override
+    public void onLanguageChanged() {
+        System.out.println("Dashboard berubah ke bahasa: "
+            + I18nService.getCurrentLocale());
+
+    jLabel1.setText(I18nService.get("ui.dashboard.title"));
+    jLabel2.setText(I18nService.get("ui.dashboard.welcome"));
+    jLabel3.setText(I18nService.get("ui.role.administrator"));
+
+    jButtonDataKaryawan.setText(I18nService.get("ui.sidebar.dashboard"));
+    btnKaryawan.setText(I18nService.get("ui.sidebar.employee"));
+    jButtonKiosK.setText(I18nService.get("ui.sidebar.attendance"));
+    jButtonLogAbsensi.setText(I18nService.get("ui.sidebar.log"));
+    btnSeting.setText(I18nService.get("ui.sidebar.settings"));
+
+    jLabel4.setText(I18nService.get("ui.app.title"));
+    jLabel5.setText(I18nService.get("ui.app.subtitle"));
+
+    // Card Dashboard
+    jLabel7.setText(I18nService.get("ui.dashboard.card.totalkaryawan"));
+    jLabel9.setText(I18nService.get("ui.dashboard.card.hadirhariini"));
+    jLabel11.setText(I18nService.get("ui.dashboard.card.tidakhadir"));
+
+    // Log
+    jLabel12.setText(I18nService.get("ui.dashboard.logterkini.title"));
+
+    jLabel13.setText(I18nService.get("ui.dashboard.col.no"));
+    jLabel17.setText(I18nService.get("ui.dashboard.col.namakaryawan"));
+    jLabel18.setText(I18nService.get("ui.dashboard.col.uidkartu"));
+    jLabel19.setText(I18nService.get("ui.dashboard.col.jabatan"));
+    jLabel20.setText(I18nService.get("ui.dashboard.col.jam"));
+    jLabel21.setText(I18nService.get("ui.dashboard.col.status"));
+
+    // Status
+    jLabel34.setText(I18nService.get("ui.status.alpha"));
+    jLabel35.setText(I18nService.get("ui.status.hadir"));
+    jLabel36.setText(I18nService.get("ui.status.izin"));
+
+    repaint();
+    revalidate();
+}
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnKaryawan;
+    private javax.swing.JButton btnSeting;
     private Sipenta.swing.gradient gradient1;
-    private javax.swing.JButton jButtonAnalisis;
     private javax.swing.JButton jButtonDataKaryawan;
-    private javax.swing.JButton jButtonGeneral;
-    private javax.swing.JButton jButtonKaryawan;
-    private javax.swing.JButton jButtonKehadiran;
     private javax.swing.JButton jButtonKiosK;
     private javax.swing.JButton jButtonLogAbsensi;
-    private javax.swing.JButton jButtonLogAbsensi2;
-    private javax.swing.JButton jButtonPengguna;
-    private javax.swing.JButton jButtonPerformance;
-    private javax.swing.JButton jButtonReport;
-    private javax.swing.JButton jButtonRiwayat;
-    private javax.swing.JButton jButtonSetting;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

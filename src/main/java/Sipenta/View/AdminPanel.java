@@ -1,41 +1,57 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Sipenta.View;
 import Sipenta.Services.KaryawanService;
 import sipenta.dao.Karyawan;
-
-
-
+import javax.swing.JOptionPane; 
+import Sipenta.Services.I18nService;
 /**
  *
  * @author VICTUS
  */
-public class AdminPage extends javax.swing.JFrame {
-    public static String idKaryawanEdit = "";
+public class AdminPanel extends javax.swing.JPanel
+        implements I18nService.I18nChangeListener {
+        public static String idKaryawanEdit = "";
+    @Override
+public void removeNotify() {
+    I18nService.unregisterListener(this);
+    super.removeNotify();
+}
+
+@Override
+public void onLanguageChanged() {
+
+    jLabel1.setText(I18nService.get("ui.karyawan.label.uid"));
+    jLabel2.setText(I18nService.get("ui.karyawan.label.idkaryawan"));
+    jLabel3.setText(I18nService.get("ui.karyawan.label.namakaryawan"));
+    jLabel4.setText(I18nService.get("ui.karyawan.label.jabatan"));
+
+    btnSimpan.setText(I18nService.get("ui.karyawan.btn.save"));
+    btnUpdate.setText(I18nService.get("ui.karyawan.btn.update"));
+    btnRefresh.setText(I18nService.get("ui.karyawan.btn.refresh"));
+
+    txtJabatan.removeAllItems();
+    txtJabatan.addItem(I18nService.get("ui.dept.supervisor"));
+    txtJabatan.addItem(I18nService.get("ui.dept.support"));
+    txtJabatan.addItem(I18nService.get("ui.dept.topman"));
+    txtJabatan.addItem(I18nService.get("ui.dept.it"));
+
+    repaint();
+    revalidate();
+}
     
-    // 1. Pindahkan deklarasi ke sini agar bisa dipakai di semua method !!!
-    /**
-     * Creates new form AdminPage
-     */
-    public AdminPage() {
-        initComponents();
-      
-        
-        showData(""); //tampilkan seluruh data karyawan    
-        
-    }
+    public AdminPanel() {
+    initComponents();
 
+    I18nService.registerListener(this);
+
+    onLanguageChanged();
+
+    showData("");
+}
     
-
-
-    /**
-     * Creates new form AdminPage
-     */
-  
-    
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,9 +61,6 @@ public class AdminPage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtUid = new javax.swing.JTextField();
-        txtkaryawan = new javax.swing.JTextField();
-        txtnip = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -56,30 +69,12 @@ public class AdminPage extends javax.swing.JFrame {
         btnUpdate = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
         txtJabatan = new javax.swing.JComboBox<>();
+        txtUid = new javax.swing.JTextField();
         txtCari = new javax.swing.JTextField();
+        txtkaryawan = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(0, 51, 153));
-
-        txtUid.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUidActionPerformed(evt);
-            }
-        });
-
-        txtkaryawan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtkaryawanActionPerformed(evt);
-            }
-        });
-
-        txtnip.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtnipActionPerformed(evt);
-            }
-        });
+        txtnip = new javax.swing.JTextField();
 
         jLabel1.setText("UID");
 
@@ -121,12 +116,24 @@ public class AdminPage extends javax.swing.JFrame {
 
         txtJabatan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Supervisor", "Staff HRD", "Staff Ceo", "HRD" }));
 
+        txtUid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUidActionPerformed(evt);
+            }
+        });
+
         txtCari.setBackground(new java.awt.Color(0, 0, 102));
         txtCari.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtCari.setForeground(new java.awt.Color(255, 255, 255));
         txtCari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCariActionPerformed(evt);
+            }
+        });
+
+        txtkaryawan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtkaryawanActionPerformed(evt);
             }
         });
 
@@ -145,8 +152,14 @@ public class AdminPage extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jPanel2);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        txtnip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtnipActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -179,7 +192,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1220, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,92 +224,78 @@ public class AdminPage extends javax.swing.JFrame {
                         .addGap(20, 20, 20)
                         .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+     System.out.println("DEBUG: Tombol Save diklik!"); 
+        
+        try {
+            Karyawan k = new Karyawan();
+            k.setUid(txtUid.getText());      
+            k.setNip(txtnip.getText()); 
+            k.setNama(txtkaryawan.getText());     
+            k.setJabatan(txtJabatan.getSelectedItem().toString());
+            
+            KaryawanService service = new KaryawanService();
+            service.tambahKaryawan(k);
+            
+            refresAll();
+           JOptionPane.showMessageDialog(this,I18nService.get("msg.save.success"));
+            System.out.println("DEBUG: Data berhasil disimpan ke Service.");
+            
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            JOptionPane.showMessageDialog(this, I18nService.get("msg.save.error"));
+        }
+    
+    
+    }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+            if (idKaryawanEdit == null || idKaryawanEdit.isEmpty()) {
+            JOptionPane.showMessageDialog(this, I18nService.get("msg.edit.first"));
+            return;
+        }
+
+        // Deklarasi Karyawan k HARUS ADA di dalam method
+        Karyawan k = new Karyawan();
+        k.setIdHex(idKaryawanEdit); // Pastikan ID ini tersimpan
+        k.setUid(txtUid.getText());
+        k.setNip(txtnip.getText());
+        k.setNama(txtkaryawan.getText());
+        k.setJabatan(txtJabatan.getSelectedItem().toString());
+
+        KaryawanService service = new KaryawanService();
+        service.updateKaryawan(k);
+        refresAll();
+        JOptionPane.showMessageDialog(this, I18nService.get("msg.update.success"));
+
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        refresAll();
+
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void txtUidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUidActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUidActionPerformed
 
-    private void txtnipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnipActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtnipActionPerformed
-
-    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        Karyawan k = new Karyawan();
-        k.setRfid(txtUid.getText());      // Mengisi variabel rfid
-        k.setNip(txtnip.getText()); // Mengisi variabel nip
-        k.setNama(txtkaryawan.getText());     // Mengisi variabel nama
-        k.setJabatan(txtJabatan.getSelectedItem().toString());// Mengisi variabel 
-        KaryawanService service = new KaryawanService();
-       service.tambahKaryawan(k);
-       showData("");
-    }//GEN-LAST:event_btnSimpanActionPerformed
-
-    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-         refresAll();
-     
-
-    }//GEN-LAST:event_btnRefreshActionPerformed
-
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-
-        Karyawan k = new Karyawan();
-        k.setId(idKaryawanEdit);
-        k.setRfid(txtUid.getText());      // Mengisi variabel rfid
-        k.setNip(txtnip.getText()); // Mengisi variabel nip
-        k.setNama(txtkaryawan.getText());     // Mengisi variabel nama
-        k.setJabatan(txtJabatan.getSelectedItem().toString());
-        KaryawanService service = new KaryawanService();
-        service.updateKaryawan(k);
-        showData("");
-    
-    }//GEN-LAST:event_btnUpdateActionPerformed
+    private void txtCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariActionPerformed
+        showData(txtCari.getText());
+    }//GEN-LAST:event_txtCariActionPerformed
 
     private void txtkaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtkaryawanActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtkaryawanActionPerformed
 
-    private void txtCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariActionPerformed
-      showData(txtCari.getText());
-    }//GEN-LAST:event_txtCariActionPerformed
+    private void txtnipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnipActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtnipActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new AdminPage().setVisible(true);
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefresh;
@@ -315,7 +314,7 @@ public class AdminPage extends javax.swing.JFrame {
     public static javax.swing.JTextField txtnip;
     // End of variables declaration//GEN-END:variables
 
-     public static void showData(String key) {
+  public static void showData(String key) {
         KaryawanService K = new KaryawanService();
         K.tampilKaryawan(jPanel2, key);
     }
@@ -323,13 +322,16 @@ public class AdminPage extends javax.swing.JFrame {
     private void refresAll() {
         showData("");
         txtUid.setText("");
+        // UID di-unlock kembali, siap dipakai untuk menambah data baru
+        txtUid.setEditable(true);
+        txtUid.setEnabled(true);
         txtnip.setText("");
         txtnip.setEnabled(true);
         txtkaryawan.setText("");
         txtJabatan.setSelectedIndex(0); 
         btnUpdate.setEnabled(false); 
+        idKaryawanEdit = "";
+        btnSimpan.setEnabled(true);
         txtUid.requestFocus();
-    }
 }
-
-
+}

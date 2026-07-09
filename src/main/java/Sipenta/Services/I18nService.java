@@ -23,7 +23,7 @@ public class I18nService {
     
     // Default bahasa saat aplikasi pertama kali menyala
     static {
-        setLocale(Locale.of("id")); 
+        setLocale(new Locale("id"));
     }
     
     public static void setLocale(Locale locale) {
@@ -44,6 +44,7 @@ public class I18nService {
     public static Locale getCurrentLocale() {
         return currentLocale;
     }
+
     
     public static synchronized void registerListener(I18nChangeListener listener) {
         if (!listeners.contains(listener)) {

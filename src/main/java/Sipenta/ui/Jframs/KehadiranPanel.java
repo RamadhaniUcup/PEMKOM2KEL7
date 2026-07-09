@@ -1,34 +1,45 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Sipenta.ui.Jframs;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import javax.swing.Timer;
+import com.mongodb.client.model.Filters;
+import sipenta.dao.GenericDAO;
+import sipenta.dao.Karyawan;
 
-import Sipenta.Services.DigitalClockService;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import java.awt.Image;
+/**
+ *
+ * @author VICTUS
+ */
+public class KehadiranPanel extends javax.swing.JPanel {
 
-public class Kehadiran extends javax.swing.JFrame {
-    private Thread clockThread;
-
-    public Kehadiran() {
-    initComponents();
-
-    styleIconTapKartu();
-    initClock(jLabel2);
-}
-    private void styleIconTapKartu() {
-    jLabel10.setIcon(null);
-    jLabel10.setText("▮ ))");
-    jLabel10.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 18));
-    jLabel10.setForeground(java.awt.Color.WHITE);
-    jLabel10.setBackground(new java.awt.Color(84, 91, 105));
-    jLabel10.setOpaque(true);
-    jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    jLabel10.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
-    jLabel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 8, 5, 8));
-}
+    /**
+     * Creates new form KehadiranPanel
+     */
+    public KehadiranPanel() {
+     initComponents();
+       jalankanJamRealtime(); // Menjalankan fungsi jam otomatis saat panel dibuka
+    }
+    private void jalankanJamRealtime() {
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Mengambil waktu saat ini dan diformat ke bahasa Indonesia
+                SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMMM yyyy, HH : mm : ss", new Locale("id", "ID"));
+                String waktuSekarang = sdf.format(new Date());
+                
+                // Menempelkan teks waktu ke jLabel2
+                jLabel2.setText(waktuSekarang);
+            }
+        });
+        timer.start(); // Mulai detak jam
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,6 +54,8 @@ public class Kehadiran extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        gradient2 = new Sipenta.swing.gradient();
+        jLabel10 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
@@ -50,10 +63,6 @@ public class Kehadiran extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        gradient2 = new Sipenta.swing.gradient();
-        jLabel10 = new javax.swing.JLabel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -97,6 +106,24 @@ public class Kehadiran extends javax.swing.JFrame {
                 .addGap(26, 26, 26))
         );
 
+        javax.swing.GroupLayout gradient2Layout = new javax.swing.GroupLayout(gradient2);
+        gradient2.setLayout(gradient2Layout);
+        gradient2Layout.setHorizontalGroup(
+            gradient2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        gradient2Layout.setVerticalGroup(
+            gradient2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Sipenta/ui/Jframs/TAP KARTU.png"))); // NOI18N
+        jLabel10.setText("jLabel10");
+        jLabel10.setAlignmentX(0.5F);
+        jLabel10.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        jLabel10.setMinimumSize(new java.awt.Dimension(0, 0));
+        jLabel10.setPreferredSize(new java.awt.Dimension(60, 40));
+
         jLabel4.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
         jLabel4.setText("Silahkan Tap Kartu Anda");
 
@@ -125,32 +152,14 @@ public class Kehadiran extends javax.swing.JFrame {
         jLabel8.setText("Departemen :");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 50, -1, -1));
 
-        javax.swing.GroupLayout gradient2Layout = new javax.swing.GroupLayout(gradient2);
-        gradient2.setLayout(gradient2Layout);
-        gradient2Layout.setHorizontalGroup(
-            gradient2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        gradient2Layout.setVerticalGroup(
-            gradient2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
-        );
-
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Sipenta/ui/Jframs/TAP KARTU.png"))); // NOI18N
-        jLabel10.setText("jLabel10");
-        jLabel10.setAlignmentX(0.5F);
-        jLabel10.setMaximumSize(new java.awt.Dimension(32767, 32767));
-        jLabel10.setMinimumSize(new java.awt.Dimension(0, 0));
-        jLabel10.setPreferredSize(new java.awt.Dimension(60, 40));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(gradient1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(gradient2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(505, Short.MAX_VALUE)
+                .addContainerGap(483, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addGroup(layout.createSequentialGroup()
@@ -164,7 +173,7 @@ public class Kehadiran extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(gradient1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(113, 113, 113)
+                .addGap(97, 97, 97)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -172,52 +181,84 @@ public class Kehadiran extends javax.swing.JFrame {
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 232, Short.MAX_VALUE)
                 .addComponent(gradient2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
+    // 1. Ambil nomor UID dari kartu yang baru saja di-tap
+        String uidKartu = jTextField1.getText().trim();
+        
+        // Cegah proses jika kotak teks ternyata kosong
+        if (uidKartu.isEmpty()) {
+            return;
+        }
+        
+        try {
+            // 2. Hubungkan ke DAO Karyawan di database
+            sipenta.dao.GenericDAO<sipenta.dao.Karyawan> karyawanDao = new sipenta.dao.GenericDAO<>("karyawan", sipenta.dao.Karyawan.class);
+            
+            // 3. Cari data karyawan yang RFID-nya cocok dengan uidKartu
+            sipenta.dao.Karyawan dataKaryawan = karyawanDao.findOne(com.mongodb.client.model.Filters.eq("rfid", uidKartu));
+            
+            if (dataKaryawan != null) {
+                // JIKA DITEMUKAN: Tampilkan datanya di layar
+                jLabel3.setText("Nama Lengkap : " + dataKaryawan.getNama());
+                jLabel5.setText("ID Karyawan : " + dataKaryawan.getNip()); 
+                jLabel8.setText("Departemen : " + dataKaryawan.getJabatan()); 
+                
+                // --- TAHAP 2: PROSES SIMPAN LOG ABSENSI ---
+                // Ambil Tanggal dan Jam saat kartu di-tap
+                java.text.SimpleDateFormat sdfTanggal = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                java.text.SimpleDateFormat sdfJam = new java.text.SimpleDateFormat("HH:mm:ss");
+                java.util.Date waktuSekarang = new java.util.Date();
+                
+                String tglAbsen = sdfTanggal.format(waktuSekarang);
+                String jamAbsen = sdfJam.format(waktuSekarang);
+                String statusAbsen = "Hadir"; // Default status
+                
+                // Buat cetakan objek LogAbsensi baru
+                sipenta.object.LogAbsensi logBaru = new sipenta.object.LogAbsensi(
+                    dataKaryawan.getNip(), 
+                    tglAbsen, 
+                    jamAbsen, 
+                    statusAbsen
+                );
+                
+                // DI SINI LETAK KODINGAN YANG SUDAH DIPERBAIKI (Pakai "LogAbsensi")
+                sipenta.dao.GenericDAO<sipenta.object.LogAbsensi> logDao = new sipenta.dao.GenericDAO<>("LogAbsensi", sipenta.object.LogAbsensi.class);
+                logDao.save(logBaru);
+                // ------------------------------------------
+                
+                System.out.println("Berhasil Absen: " + dataKaryawan.getNama() + " pada jam " + jamAbsen);
+                
+            } else {
+                // JIKA TIDAK DITEMUKAN: Kosongkan layar dan beri peringatan
+                jLabel3.setText("Nama Lengkap : -");
+                jLabel5.setText("ID Karyawan : -");
+                jLabel8.setText("Departemen : -");
+                
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Kartu dengan UID " + uidKartu + " tidak terdaftar di sistem!", 
+                    "Akses Ditolak", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Terjadi kesalahan database: " + e.getMessage());
+        } finally {
+            // 4. BERSIHKAN KOTAK TEKS UNTUK KARYAWAN BERIKUTNYA
+            jTextField1.setText(""); 
+            
+            // 5. KEMBALIKAN KURSOR KE KOTAK TEKS
+            jTextField1.requestFocus(); 
+        }
+    
+
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Kehadiran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Kehadiran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Kehadiran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Kehadiran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Kehadiran().setVisible(true);
-            }
-        });
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Sipenta.swing.gradient gradient1;
     private Sipenta.swing.gradient gradient2;
@@ -233,22 +274,4 @@ public class Kehadiran extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
-    
-    private void initClock(JLabel lblJam) {
-        DigitalClockService service = new DigitalClockService(lblJam, "EEEE, d MMMM yyyy, HH:mm:ss");
-        
-        // 1. Ambil objek thread dari service
-        clockThread = service.getThread();
-        
-        // 2. Beri nama secara mandiri untuk debugging/tracking
-        clockThread.setName("Thread-Jam-Kiosk");
-        
-        // 3. Atur daemon secara mandiri sebelum start [Conversation History]
-        clockThread.setDaemon(true);
-        
-        // 4. Jalankan thread (Fase New -> Runnable) [3]
-        clockThread.start();
-        
-        System.out.println("Memulai: " + clockThread.getName() + " (Daemon: " + clockThread.isDaemon() + ")");
-    }
 }
